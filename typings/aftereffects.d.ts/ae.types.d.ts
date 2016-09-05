@@ -636,6 +636,7 @@ declare class Layer {
 
   /** When true, the layer is locked. */
   locked: boolean;
+  motionBlur: boolean;
 
   /** When true, the layer contains a video component. */
   readonly hasVideo: boolean;
