@@ -3,18 +3,28 @@
  * :shy+locked
  * :motionBlur, Solid 1
  * :solo+!enabled
+ *
+ *
+ * Features:
+ *  - Break layer
+ *  - Break by Voronoi
+ *  -
  */
 
 
 declare type JQuerySelector = string | number | Function | RegExp;
-declare type IteratorFn = (index:number) => any;
+declare type IteratorFn = (index:number, el:any) => any;
 
 class JQuery<T> {
-[index:number]:T;
     public length:number = 0;
+[index:number]:T;
 
     constructor(public init:Function) {
 
+    }
+
+    public toArray() {
+        return [].slice.call(this);
     }
 
     public first():T {
@@ -32,7 +42,7 @@ class JQuery<T> {
 
     public each(fn:IteratorFn):JQuery<T> {
         for (var i = 0; i < this.length; i++) {
-            fn.call(this[i], i);
+            fn.call(this[i], i, this[i]);
         }
 
         return this;
@@ -40,10 +50,16 @@ class JQuery<T> {
 
     public map(fn:IteratorFn):JQuery<T> {
         for (var i = 0; i < this.length; i++) {
-            this[i] = fn.call(this[i], i);
+            this[i] = fn.call(this[i], i, this[i]);
         }
 
         return this;
+    }
+
+    public filter(fn:IteratorFn):JQuery<T> {
+        var jQuery:JQuery<T> = new JQuery(this.init);
+        this.each((i, el) => jQuery.push(el));
+        return jQuery;
     }
 
     public expr:{[key:string]:Function} = {
@@ -120,18 +136,42 @@ class AEQuery extends JQuery<Layer> {
     }
 
     /**
-     * path === 'Transorm > Position'
+     * path === 'Transform > Position'
      * @param path
      * @param strict
      */
-    public prop(path:string, strict:boolean = false) {
+    public prop(path:string, strict:boolean = false):Property {
+        var prop:any = this.first();
+        var pathElements = path.split(/\s*>\s*/);
 
+        while (pathElements.length > 0) {
+            let pathElement = pathElements.shift();
+            prop = prop.property(pathElement);
+        }
+
+        return prop;
+    }
+
+    public dupe() {
+        var ae:AEQuery = new AEQuery();
+
+        this.each(function () {
+            ae.push(this.duplicate());
+        });
+
+        return ae;
+    }
+
+    public undoGroup(fn:Function) {
+        app.beginUndoGroup('AEQuery Undo Group');
+        fn.call(this, this);
+        app.endUndoGroup();
     }
 }
 
 (() => {
     var ae:AEQuery = new AEQuery();
+    var s = ae.init(':text');
 
-    var s = ae.init(':text+enabled');
-    alert(s.length);
+    s.undoGroup(s => s.dupe());
 })();
