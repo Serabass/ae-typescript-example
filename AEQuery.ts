@@ -135,12 +135,11 @@ class AEQuery extends JQuery<Layer> {
 
                 if (selector === '*')
                     return true;
-/*
+                /*
                 let matches:boolean[] = (<string>selector).split(/\s*,\s*!/)
                     .map(string => this.compare(layer, string));
-
-
                 */
+
                 return layer.name === selector;
 
             case 'number':
@@ -207,10 +206,10 @@ class AEQuery extends JQuery<Layer> {
         throw "Under construction";
     }
 
-    public dupe():AEQuery {
+    public duplicate():AEQuery {
         var ae:AEQuery = new AEQuery();
 
-        this.each((i, el) => ae.push(el.duplicate()));
+        this.each((i, el:Layer) => ae.push(el.duplicate()));
 
         return ae;
     }

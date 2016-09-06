@@ -17,39 +17,39 @@ declare class $ {
      * value can differ from the value set. In Windows, for example, if set to
      * “x-latin1”, the returned value is the synonymous “ISO-8859-1”.
      */
-    static appEncoding: string
+    static appEncoding:string;
 
     /*
      * The version information for the current ExtendScript build. Read only.
      */
-    static build: string
+    static build:string;
 
     /*
      * The date the current JavaScript engine was built. Read only.
      */
-    static buildDate: Date
+    static buildDate:Date;
 
     /*
      * The character used in formatted numeric output for a decimal point, for
      * the current locale. Read only.
      */
-    static decimalPoint: string
+    static decimalPoint:string;
 
     /*
      * The name of the current JavaScript engine, if set. Read only.
      */
-    static engineName: string
+    static engineName:string;
 
     /*
      * The most recent run-time error information, contained in a JavaScript
      * Error object.
      */
-    static error: Error
+    static error:Error;
 
     /*
      * The file name of the current script. Read only.
      */
-    static fileName: string
+    static fileName:string;
 
     /*
      * Gets or sets low-level debug output flags. A logical AND of the following
@@ -69,13 +69,13 @@ declare class $ {
      *
      * NOTE: Other bit values are not public and should not be used.
      */
-    static flags: number
+    static flags:number;
 
     /*
      * Provides access to the Global object, which contains the JavaScript
      * global namespace.
      */
-    static global: Global
+    static global:Global;
 
     /*
      * A high-resolution timer that measures the number of microseconds since
@@ -84,12 +84,12 @@ declare class $ {
      * The property is thread-local; that is, the first access on a thread
      * returns the time needed to create and initialize that thread. Read only.
      */
-    static hiresTimer: number
+    static hiresTimer:number;
 
     /*
      * The path for include files for the current script. Read only.
      */
-    static includePath: string
+    static includePath:string;
 
     /*
      * The current debugging level, which enables or disables the JavaScript
@@ -98,13 +98,13 @@ declare class $ {
      * 1: Break on runtime errors
      * 2: Full debug mode
      */
-    static level: number
+    static level:number;
 
     /*
      * The current line of the currently executing script; the first line is
      * number 1. Read only.
      */
-    static line: number
+    static line:number;
 
     /*
      * Gets or sets the current locale. The string contains five characters in
@@ -115,23 +115,23 @@ declare class $ {
      * testing. To return to the application or platform setting, set to
      * undefined, null, or the empty string.
      */
-    static locale: string
+    static locale:string;
 
     /*
      * Enable or disable the extended localization features of the built-in
      * toString method. See Localizing ExtendScript strings.
      */
-    static localize: boolean
+    static localize:boolean;
 
     /*
      * Gets or sets the ExtendScript memory cache size in bytes.
      */
-    static memCache: number
+    static memCache:number;
 
     /*
      * The current operating system version information. Read only.
      */
-    static os: string
+    static os:string;
 
     /*
      * An array of objects containing information about the display screens
@@ -143,31 +143,31 @@ declare class $ {
      * TODO: Type up a screen. There is no formal type in the docs, just the
      * shape.
      */
-    static screens: {left: number; top: number; right: number; bottom: number; primary: boolean;}[]
+    static screens:{left: number; top: number; right: number; bottom: number; primary: boolean;}[];
 
     /*
      * The current stack trace.
      */
-    static stack: string
+    static stack:string;
 
     /*
      * When true, any attempt to write to a read-only property causes a runtime
      * error. Some objects do not permit the creation of new properties when
      * true.
      */
-    static strict: boolean
+    static strict:boolean;
 
     /*
      * The version number of the JavaScript engine as a three-part number and
      * description; for example: "3.92.95 (debug)" Read only.
      */
-    static version: string
+    static version:string;
 
     /*
      * Displays the About box for the ExtendScript component, and returns the
      * text of the About box as a string.
      */
-    static about(): string
+    static about():string;
 
     /*
      * Executes a breakpoint at the current position.
@@ -178,7 +178,7 @@ declare class $ {
      * that you use the JavaScript debugger statement in the script, rather than
      * this method
      */
-    static bp(condition?: string): void
+    static bp(condition?:string):void;
 
     /*
      * Invokes the platform-specific color selection dialog, and returns the
@@ -187,7 +187,7 @@ declare class $ {
      * @param name number The color to be preselected in the dialog, as a
      * hexadecimal RGB value (0xRRGGBB), or -1 for the platform default.
      */
-    static colorPicker(name: number): number
+    static colorPicker(name:number):number;
 
     /*
      *
@@ -199,12 +199,12 @@ declare class $ {
      * @param timeout number of milliseconds to wait before returning undefined,
      * if the script cannot be evaluated. Default is 10000 milliseconds.
      */
-    static evalFile(path: string, timeout?: number): any
+    static evalFile(path:string, timeout?:number):any;
 
     /*
      * Initiates garbage collection in the JavaScript engine.
      */
-    static gc(): void
+    static gc():void;
 
     /*
      * Retrieves the value of the specified environment variable, or null if no
@@ -212,7 +212,7 @@ declare class $ {
      *
      * @param envname string The name of the environment variable.
      */
-    static getenv(envname: string): string
+    static getenv(envname:string):string;
 
     /*
      * Sets the value of the specified environment variable, if no such variable
@@ -222,7 +222,7 @@ declare class $ {
      *
      * @param value string The new value
      */
-    static setenv(envname: string, value: string): void
+    static setenv(envname:string, value:string):void
 
     /*
      * Suspends the calling thread for the given number of milliseconds.
@@ -232,14 +232,14 @@ declare class $ {
      *
      * @param milliseconds number of milliseconds to wait.
      */
-    static sleep(milliseconds: number): void
+    static sleep(milliseconds:number):void;
 
     /*
      * Writes the specified text to the JavaScript Console.
      * @param text One or more strings to write, which are concatenated to form
      * a single string.
      */
-    static write(text: any,  ...texts: any[]): void
+    static write(text:any, ...texts:any[]):void;
 
     /*
      * Writes the specified text to the JavaScript Console and appends a
@@ -248,5 +248,5 @@ declare class $ {
      * @param text One or more strings to write, which are concatenated to form
      * a single string.
      */
-    static writeln(text: any,  ...texts: any[]): void
+    static writeln(text:any, ...texts:any[]):void;
 }

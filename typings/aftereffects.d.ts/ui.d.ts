@@ -8,7 +8,7 @@ declare type Point = [number, number];
 
 declare type Alignment = number | 'top' | 'bottom' | 'left' | 'right' | 'fill' | 'center';
 
-declare module ScriptUI {
+declare module _ScriptUI {
 	export enum Alignment {
 		TOP,
 		BOTTOM,
@@ -17,7 +17,7 @@ declare module ScriptUI {
 		FILL,
 		CENTER
 	}
-	
+
 	export enum FontStyle {
 		REGULAR,
 		BOLD,
@@ -26,25 +26,32 @@ declare module ScriptUI {
 	}
 }
 
+declare class ScriptUIEnvironmentKeyboardState {
+    keyName: string;
+    shiftKey: boolean;
+    ctrlKey: boolean;
+    altKey: boolean;
+    metaKey: boolean;
+}
+
+declare class ScriptUIEnvironment {
+    keyboardState: ScriptUIEnvironmentKeyboardState
+}
+
+declare class ScriptUIEvents {
+    createEvent(eventType: string): UIEvent;
+}
+
 declare class ScriptUI {
+
 	static compatibility: any;
 	static coreVersion: string;
-	static environment: {
-		keyboardState: {
-			keyName: string;
-			shiftKey: boolean;
-			ctrlKey: boolean;
-			altKey: boolean;
-			metaKey: boolean;
-		}
-	};
-	static events: {
-		createEvent(eventType: string): UIEvent
-	};
+	static environment: ScriptUIEnvironment;
+	static events: ScriptUIEvents;
 	static frameworkName: string;
 	static version: string;
 	static getResourceText(text: string): string;
-	static newFont(name: string, style: ScriptUI.FontStyle, size: number): ScriptUIFont;
+	static newFont(name: string, style: _ScriptUI.FontStyle, size: number): ScriptUIFont;
 	static newImage(normal: string, disabled: string, pressed: string, rollover: string): ScriptUIImage;
 }
 
@@ -58,7 +65,7 @@ declare class ScriptUIGraphics {
 	disabledForegroundColor: ScriptUIPen;
 	font: ScriptUIFont;
 	foregroundColor: ScriptUIPen;
-	
+
 	closePath(): void;
 	drawFocusRing(left: number, top: number, width?: number, height?: number): void;
 	drawImage(image: ScriptUIImage, left: number, top: number, width?: number, height?: number): void;
@@ -86,7 +93,7 @@ declare class ScriptUIFont {
 	family: string;
 	name: string;
 	size: number;
-	style: ScriptUI.FontStyle;
+	style: _ScriptUI.FontStyle;
 	substitute: string;
 }
 
@@ -130,7 +137,7 @@ declare class UIEvent {
 	timeStamp: Date;
 	type: string;
 	view: any;
-	
+
 	initUIEvent(eventName: string, bubble: boolean, isCancelable: boolean, view: any, detail: number): void;
 	preventDefault(): void;
 	stopPropagation(): void;
@@ -145,7 +152,7 @@ declare class KeyboardEvent extends UIEvent {
 	keyLocation: number;
 	keyName: string;
 	type: string;
-	
+
 	getModifierState(keyIdentifier: string): boolean;
 	initKeyboardEvent(eventName: string, bubble: boolean, isCancelable: boolean, view: any, keyID: string, keyLocation: number, modifiersList: string): void;
 }
@@ -163,7 +170,7 @@ declare class MouseEvent extends UIEvent {
 	screenY: number;
 	shiftKey: boolean;
 	type: string;
-	
+
 	getModifierState(keyIdentifier: string): boolean;
 	initMouseEvent (eventName: string, bubble: boolean, isCancelable: boolean, view: any, detail: number, screenX: number, screenY: number, clientX: number, clientY: number, ctrlKey: boolean, altKey: boolean, shiftKey: boolean, metaKey: boolean, button: number, relatedTarget?: any): void;
 }
@@ -210,7 +217,7 @@ declare class _WindowOrContainer {
 	visible: boolean;
 	window: Window;
 	windowBounds: Bounds;
-	
+
 	add(type: 'button', bounds?: Bounds, text?: string, creation_properties?: {name?: string;}): Button;
 	add(type: 'checkbox', bounds?: Bounds, text?: string, creation_properties?: {name?: string;}): Checkbox;
 	add(type: 'dropdownlist', bounds?: Bounds, items?: string[], creation_properties?: {name?: string; items?: string[];}): DropDownList;
@@ -239,7 +246,7 @@ declare class _WindowOrContainer {
 	remove(child: any): void;
 	removeEventListener(eventName: string, handler: (e: UIEvent) => void, capturePhase?: boolean): void;
 	show(): any;
-	
+
 	onDraw: Function;
 	onActivate: Function;
 	onClose: Function;
@@ -255,7 +262,7 @@ declare class _WindowOrContainer {
 declare class Window extends _WindowOrContainer{
 	static frameworkName: string;
 	static version: string;
-	
+
 	static alert(message: string, title?: string, errorIcon?: boolean): void;
 	static confirm(message: string, noAsDflt?: boolean, title?: string): boolean;
 	static find(resourceName: string): Window;
@@ -317,7 +324,7 @@ declare class __Control {
 	notify(event: string): void;
 	removeEventListener(eventName: string, handler: (e: UIEvent) => void, capturePhase?: boolean): void;
 	show(): any;
-	
+
 	onDraw: Function;
 	onEnterKey: Function;
 	onActivate: Function;
@@ -348,7 +355,7 @@ declare class _Control extends __Control {
 declare class _ListControl extends _Control {
 	items: ListItem[];
 	itemSize: Dimension;
-	
+
 	add(type: 'item', text: string, index?: number): ListItem;
 	add(type: 'separator', text: string, index?: number): void;
 	add(type: 'node', text: string, index?: number): _Node;
@@ -357,7 +364,7 @@ declare class _ListControl extends _Control {
 	remove(text: string): void;
 	remove(child: ListItem): void;
 	removeAll(): void;
-	
+
 	onChange: Function;
 }
 
@@ -366,7 +373,7 @@ declare class Button extends _Control {
 	justify: string;
 	shortcutKey: string;
 	text: string;
-	
+
 	onClick: Function;
 	onShortcutKey: Function;
 }
@@ -378,7 +385,7 @@ declare class Checkbox extends _Control {
 	shortcutKey: string;
 	text: string;
 	value: boolean;
-	
+
 	onClick: Function;
 	onShortcutKey: Function;
 }
@@ -389,7 +396,7 @@ declare class DropDownList extends _ListControl {
 	shortcutKey: string;
 	title: string;
 	titleLayout: _TitleLayout;
-	
+
 	onShortcutKey: Function;
 }
 
@@ -400,7 +407,7 @@ declare class EditText extends _Control {
 	shortcutKey: string;
 	text: string;
 	textselection: string;
-	
+
 	onChange: Function;
 	onChanging: Function;
 	onShortcutKey: Function;
@@ -411,12 +418,12 @@ declare class FlashPlayer extends _Control {
 	shortcutKey: string;
 	title: string;
 	titleLayout: _TitleLayout;
-	
+
 	invokePlayerFunction(fnName: string, ...args): any;
 	loadMovie(file: File): void;
 	playMovie(rewind: boolean): void;
 	stopMovie(): void;
-	
+
 	onShortcutKey: Function;
 }
 
@@ -428,7 +435,7 @@ declare class IconButton extends _Control {
 	text: string;
 	title: string;
 	titleLayout: _TitleLayout;
-	
+
 	onClick: Function;
 	onShortcutKey: Function;
 }
@@ -440,7 +447,7 @@ declare class Image extends _Control {
 	shortcutKey: string;
 	title: string;
 	titleLayout: _TitleLayout;
-	
+
 	onShortcutKey: Function;
 }
 
@@ -448,11 +455,11 @@ declare class ListBox extends _ListControl {
 	active: boolean;
 	columns: {
 		titles: string[],
-		preferredWidths: number[]
+		preferredWidths: number[];
 	};
 	selection: ListItem[] | ListItem | number;
 	shortcutKey: string;
-	
+
 	revealItem(item: ListItem): void;
 
 	onDoubleClick: Function;
@@ -475,7 +482,7 @@ declare class ListItem extends __Control{
 	}[];
 	text: string;
 	type: string;
-	
+
 	toString(): string;
 	valueOf(): number;
 }
@@ -503,7 +510,7 @@ declare class RadioButton extends _Control {
 	shortcutKey: string;
 	text: string;
 	value: boolean;
-	
+
 	onClick: Function;
 	onShortcutKey: Function;
 }
@@ -516,7 +523,7 @@ declare class Scrollbar extends _Control {
 	shortcutKey: string;
 	stepdelta: number;
 	value: number;
-	
+
 	onChange: Function;
 	onChanging: Function;
 	onShortcutKey: Function;
@@ -529,7 +536,7 @@ declare class Slider extends _Control {
 	shortcutKey: string;
 	text: string;
 	value: number;
-	
+
 	onChange: Function;
 	onChanging: Function;
 	onShortcutKey: Function;
@@ -541,15 +548,15 @@ declare class StaticText extends _Control {
 	justify: string;
 	shortcutKey: string;
 	text: string;
-	
+
 	onShortcutKey: Function;
 }
 
 declare class TreeView extends _ListControl {
 	active: boolean;
-	selection: ListItem
+	selection: ListItem;
 	shortcutKey: string;
-	
+
 	onExpand: Function;
 	onCollapse: Function;
 	onShortcutKey: Function;

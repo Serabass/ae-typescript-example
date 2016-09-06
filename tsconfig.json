@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es5",
     "outFile": "ScriptExample.jsx",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "sourceMap": true
   },
   "files": [
     "typings/aftereffects.d.ts/ae.d.ts",

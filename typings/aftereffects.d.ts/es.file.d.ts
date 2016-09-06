@@ -14,13 +14,13 @@ declare class File {
      * The path need not refer to an existing file. If not supplied, a temporary
      * name is generated.
      */
-    constructor(path?: string)
+    constructor(path?:string);
 
     /*
      * The name of the file system. Read only. One of Windows, Macintosh, or
      * Unix.
      */
-    static fs: string
+    static fs:string;
 
     /*
      * Decodes the specified string as required by RFC 2396.
@@ -39,7 +39,7 @@ declare class File {
      *
      * @return Returns the decoded string.
      */
-    static decode(uri: string): string
+    static decode(uri:string):string;
 
     /*
      * Encodes the specified string as required by RFC 2396. All special
@@ -57,7 +57,7 @@ declare class File {
      *
      * @return the encoded string.
      */
-    static encode(name: string): string
+    static encode(name:string):string;
 
     /*
      * Checks whether a given encoding is available.
@@ -68,7 +68,7 @@ declare class File {
      * @return true if your system supports the specified encoding, false
      * otherwise.
      */
-    static isEncodingAvailable(name: string): boolean
+    static isEncodingAvailable(name:string):boolean;
 
     /*
      *
@@ -95,7 +95,7 @@ declare class File {
      *
      * TODO: return `(File|File[])` in TSC 1.4
      */
-    static openDialog(prompt_?: string, filter?: string, multiSelect?: boolean): File|File[]
+    static openDialog(prompt_?:string, filter?:string, multiSelect?:boolean):File|File[];
 
     /*
      * Opens the built-in platform-specific file-browsing dialog in which a user
@@ -112,35 +112,35 @@ declare class File {
      * @return a File object for the selected file location if the user clicks
      * OK, or null otherwise.
      */
-    static saveDialog (prompt_?: string, filter?: string): File
+    static saveDialog(prompt_?:string, filter?:string):File;
 
     /*
      * The full path name for the referenced file in URI notation. Read only.
      */
-    absoluteURI: string
+    absoluteURI:string;
 
     /*
      * When true, the object refers to a file system alias or shortcut. Read
      * only.
      */
-    alias: boolean
+    alias:boolean
 
     /*
      * The creation date of the referenced file, or null if the object does not
      * refer to a file on disk. Read only.
      */
-    created: Date
+    created:Date
 
     /*
      * In Mac OS, the file creator as a four-character string. In Windows or
      * UNIX, value is "????". Read only.
      */
-    creator: string
+    creator:string;
 
     /*
      * The localized name of the referenced file, without the path. Read only.
      */
-    displayName: string
+    displayName:string;
 
     /*
      *
@@ -152,13 +152,13 @@ declare class File {
      * When writing, the lower byte of each Unicode character is treated as a
      * single byte to write.
      */
-    encoding: string
+    encoding:string;
 
     /*
      * When true, a read attempt caused the current position to be at the end of
      * the file, or the file is not open. Read only.
      */
-    eof: boolean
+    eof:boolean;
 
     /*
      * A message describing the last file system error. Typically set by the
@@ -166,37 +166,37 @@ declare class File {
      * message and resets the error bit for opened files. Contains the empty
      * string if there is no error.
      */
-    error: string
+    error:string;
 
     /*
      * When true, this object refers to a file or file-system alias that
      * actually exists in the file system. Read only.
      */
-    exists: boolean
+    exists:boolean;
 
     /*
      * The platform-specific full path name for the referenced file. Read only.
      */
-    fsName: string
+    fsName:string
 
     /*
      * The full path name for the referenced file in URI notation. Read only.
      */
-    fullName: string
+    fullName:string
 
     /*
      * When true, the file is not shown in the platform-specific file browser.
      * Read/write. If the object references a file-system alias or shortcut, the
      * flag is altered on the alias, not on the original file.
      */
-    hidden: boolean
+    hidden:boolean;
 
     /*
      * The size of the file in bytes. Can be set only for a file that is not
      * open, in which case it truncates or pads the file with 0-bytes to the new
      * length.
      */
-    length: number
+    length:number;
 
     /*
      * How line feed characters are written in the file system. One of:
@@ -204,49 +204,49 @@ declare class File {
      * Macintosh — Mac OS style
      * Unix — UNIX style
      */
-    lineFeed: string
+    lineFeed:string;
 
     /*
      * A localized version of the file name portion of the absolute URI for the
      * referenced file, without the path specification. Read only.
      */
-    localizedName: string
+    localizedName:string;
 
     /*
      * The date of the referenced file’s last modification, or null if the
      * object does not refer to a file on disk. Read only.
      */
-    modified: Date
+    modified:Date;
 
     /*
      * The file name portion of the absolute URI for the referenced file,
      * without the path specification. Read only.
      */
-    name: string
+    name:string;
 
     /*
      * The Folder object for the folder that contains this file. Read only.
      */
-    parent: Folder
+    parent:Folder;
 
     /*
      * The path portion of the absolute URI for the referenced file, without the
      * file name. Read only.
      */
-    path: string
+    path:string;
 
     /*
      * When true, prevents the file from being altered or deleted. If the
      * referenced file is a file-system alias or shortcut, the flag is altered
      * on the alias, not on the original file.
      */
-    readonly: boolean
+    readonly:boolean;
 
     /*
      * The path name for the referenced file in URI notation, relative to the
      * current folder. Read only.
      */
-    relativeURI: string
+    relativeURI:string;
 
     /*
      * The file type as a four-character string.
@@ -255,7 +255,7 @@ declare class File {
      * any other file.
      * If the file does not exist, the value is "????". Read only.
      */
-    type: string
+    type:string;
 
     /*
      * Changes the path specification of the referenced file.
@@ -265,14 +265,14 @@ declare class File {
      *
      * @return true on success.
      */
-    changePath(path: string): boolean
+    changePath(path:string):boolean;
 
     /*
      * Closes this open file.
      *
      * @return true on success, false if there are I/O errors.
      */
-    close(): boolean
+    close():boolean
 
     /*
      * Copies this object’s referenced file to the specified target location.
@@ -284,7 +284,7 @@ declare class File {
      *
      * @return true if the copy was successful, false otherwise.
      */
-    copy(target: string): boolean
+    copy(target:string):boolean;
 
     /*
      * Makes this file a file-system alias or shortcut to the specified file.
@@ -294,7 +294,7 @@ declare class File {
      *
      * @return true if the operation was successful, false otherwise.
      */
-    createAlias(path?: string): boolean
+    createAlias(path?:string):boolean
 
     /*
      * Opens this file using the appropriate application, as if it had been
@@ -303,7 +303,7 @@ declare class File {
      *
      * @return true immediately if the application launch was successful.
      */
-    execute(): boolean
+    execute():boolean;
 
     /*
      * Retrieves the URI for this file, relative to the specified base path, in
@@ -314,7 +314,7 @@ declare class File {
      *
      * @return a string containing the relative URI.
      */
-    getRelativeURI(basePath?: string): string
+    getRelativeURI(basePath?:string):string;
 
     /*
      * Opens the referenced file for subsequent read/write operations. The
@@ -350,7 +350,7 @@ declare class File {
      *
      * @return true if the file has been opened successfully, false otherwise.
      */
-    open(mode: string, type?: string, creator?: string): boolean
+    open(mode:string, type?:string, creator?:string):boolean;
 
     /*
      * Opens the built-in platform-specific file-browsing dialog, in which the
@@ -378,7 +378,7 @@ declare class File {
      *
      * TODO: return `(File|File[])` in TSC 1.4
      */
-    openDlg(prompt_?: string, filter?: string, multiSelect?: boolean): File|File[]
+    openDlg(prompt_?:string, filter?:string, multiSelect?:boolean):File|File[];
 
     /*
      * Reads the contents of the file starting at the current position.
@@ -390,7 +390,7 @@ declare class File {
      *
      * @return a string that contains up to the specified number of characters.
      */
-    read(chars?: number): string
+    read(chars?:number):string;
 
     /*
      * Reads a single text character from the file at the current position. Line
@@ -400,7 +400,7 @@ declare class File {
      *
      * @return a string that contains the character.
      */
-    readch(): string
+    readch():string;
 
     /*
      * Reads a single line of text from the file at the current position, and
@@ -410,7 +410,7 @@ declare class File {
      *
      * @return a string that contains the text.
      */
-    readln(): string
+    readln():string;
 
     /*
      * Deletes the file associated with this object from disk, immediately,
@@ -422,7 +422,7 @@ declare class File {
      *
      * @return true if the file is deleted successfully.
      */
-    remove(): boolean
+    remove():boolean;
 
     /*
      * Renames the associated file. Does not resolve aliases, but renames the
@@ -432,7 +432,7 @@ declare class File {
      *
      * @return true on success.
      */
-    rename(newName: string): boolean
+    rename(newName:string):boolean;
 
     /*
      * If this object references an alias or shortcut, this method resolves that
@@ -442,7 +442,7 @@ declare class File {
      * @return the new File object, or null if this object does not reference an
      * alias, or if the alias cannot be resolved.
      */
-    resolve()
+    resolve();
 
     /*
      * Opens the built-in platform-specific file-browsing dialog, in which the
@@ -462,7 +462,7 @@ declare class File {
      * @return a File object for the selected file if the user clicks OK. If the
      * user cancels, returns null.
      */
-    saveDlg(prompt_?: string, preset?: string): File
+    saveDlg(prompt_?:string, preset?:string):File;
 
     /*
      * Seeks to the specified position in the file. The new position cannot be
@@ -479,7 +479,7 @@ declare class File {
      *
      * @return true if the position was changed.
      */
-    seek(pos: number, mode?: number): boolean
+    seek(pos:number, mode?:number):boolean;
 
     /*
      * Retrieves the current position as a byte offset from the start of the
@@ -487,7 +487,7 @@ declare class File {
      *
      * @return a number, the position index.
      */
-    tell(): number
+    tell():number;
 
     /*
      * Writes the specified text to the file at the current position. For
@@ -502,7 +502,7 @@ declare class File {
      *
      * @return true on success.
      */
-    write(text: string, ...texts: string[])
+    write(text:string, ...texts:string[]);
 
     /*
      * Writes the specified text to the file at the current position, and
@@ -518,7 +518,7 @@ declare class File {
      *
      * @return true on success.
      */
-    writeln (text: string, ...texts: string[])
+    writeln(text:string, ...texts:string[]);
 }
 
 declare class Folder {
@@ -529,7 +529,7 @@ declare class Folder {
      * refer to an existing folder. If not supplied, a temporary name is
      * generated.
      */
-    constructor(path?: string)
+    constructor(path?:string);
 
     /*
      * A Folder object for the folder that contains application data for all
@@ -540,13 +540,13 @@ declare class Folder {
      *
      * In Mac OS, /Library/Application Support
      */
-    static appData: Folder
+    static appData:Folder;
 
     /*
      * In Mac OS, the Folder object for the folder that contains the bundle of
      * the running application. Read only.
      */
-    static appPackage
+    static appPackage;
 
     /*
      * A Folder object for the folder that contains application data for the
@@ -557,13 +557,13 @@ declare class Folder {
      *
      * * In Mac OS,/Library/Application Support
      */
-    static commonFiles: Folder
+    static commonFiles:Folder;
 
     /*
      * A Folder object for the current folder. Assign either a Folder object or
      * a string containing the new path name to set the current folder.
      */
-    static current: Folder
+    static current:Folder;
 
     /*
      * A Folder object for the folder that contains the user’s desktop. Read
@@ -573,13 +573,13 @@ declare class Folder {
      *
      * In Mac OS, ~/Desktop
      */
-    static desktop: Folder
+    static desktop:Folder
 
     /*
      * The name of the file system. Read only. One of Windows, Macintosh, or
      * Unix.
      */
-    static fs: string
+    static fs:string;
 
     /*
      * A Folder object for the user’s default document folder. Read only.
@@ -588,13 +588,13 @@ declare class Folder {
      *
      * In Mac OS, ~/Documents
      */
-    static myDocuments: Folder
+    static myDocuments:Folder;
 
     /*
      * A Folder object for the folder containing the executable image of the
      * running application. Read only.
      */
-    static startup: Folder
+    static startup:Folder;
 
     /*
      * A Folder object for the folder containing the operating system files.
@@ -604,12 +604,12 @@ declare class Folder {
      *
      * In Mac OS, /System
      */
-    static system: Folder
+    static system:Folder;
 
     /*
      * A Folder object for the default folder for temporary files. Read only.
      */
-    static temp: Folder
+    static temp:Folder;
 
     /*
      * In Mac OS, a Folder object for the folder containing deleted items.
@@ -619,7 +619,7 @@ declare class Folder {
      *
      * Read only.
      */
-    static trash: Folder
+    static trash:Folder;
 
     /*
      * In Mac OS, a Folder object for the folder containing deleted items.
@@ -627,7 +627,7 @@ declare class Folder {
      * In Windows, where the Recycle Bin is a database rather than a folder,
      * value is null.
      */
-    static userData: Folder
+    static userData:Folder;
 
     /*
      * Decodes the specified string as required by RFC 2396.
@@ -645,7 +645,7 @@ declare class Folder {
      *
      * @return string the decoded string.
      */
-    static decode(uri: string): string
+    static decode(uri:string):string;
 
     /*
      * Encodes the specified string as required by RFC 2396. All special
@@ -662,7 +662,7 @@ declare class Folder {
      *
      * @return string the encoded string.
      */
-    static encode(name: string): string
+    static encode(name:string):string;
 
 
     /*
@@ -674,7 +674,7 @@ declare class Folder {
      * @return boolean Returns true if your system supports the specified
      * encoding, false otherwise.
      */
-    static isEncodingAvailable(name: string): boolean
+    static isEncodingAvailable(name:string):boolean;
 
     /*
      * Opens the built-in platform-specific file-browsing dialog, and creates a
@@ -689,29 +689,29 @@ declare class Folder {
      *
      * TODO: return `(File|Folder)` in TSC 1.4
      */
-    static selectDialog(prompt?: string): File|Folder
+    static selectDialog(prompt?:string):File|Folder;
 
     /*
      * The full path name for the referenced folder in URI notation. Read only.
      */
-    absoluteURI: string
+    absoluteURI:string;
 
     /*
      * When true, the object refers to a file system alias or shortcut. Read
      * only.
      */
-    alias: boolean
+    alias:boolean;
 
     /*
      * The creation date of the referenced folder, or null if the object does
      * not refer to a folder on disk. Read only.
      */
-    created: Date
+    created:Date;
 
     /*
      * The localized name of the referenced folder, without the path. Read only.
      */
-    displayName: string
+    displayName:string;
 
     /*
      * A message describing the most recent file system error Typically set by
@@ -719,60 +719,60 @@ declare class Folder {
      * error message and resets the error bit for opened files. Contains the
      * empty string if there is no error.
      */
-    error: string
+    error:string;
 
     /*
      * When true, this object refers to a folder that currently exists in the
      * file system. Read only.
      */
-    exists: boolean
+    exists:boolean;
 
     /*
      * The platform-specific name of the referenced folder as a full path name.
      * Read only.
      */
-    fsName: string
+    fsName:string;
 
     /*
      * The full path name for the referenced folder in URI notation. Read only.
      */
-    fullName: string
+    fullName:string;
 
     /*
      * A localized version of the folder name portion of the absolute URI for
      * the referenced file, without the path specification. Read only.
      */
-    localizedName: string
+    localizedName:string;
 
     /*
      * The date of the referenced folder’s last modification, or null if the
      * object does not refer to a folder on disk. Read only.
      */
-    modified: Date
+    modified:Date;
 
     /*
      * The folder name portion of the absolute URI for the referenced file,
      * without the path specification. Read only.
      */
-    name: string
+    name:string;
 
     /*
      * The Folder object for the folder that contains this folder, or null if
      * this object refers to the root folder of a volume. Read only.
      */
-    parent: Folder
+    parent:Folder;
 
     /*
      * The path portion of the absolute URI for the referenced folder, without
      * the folder name. Read only.
      */
-    path: string
+    path:string;
 
     /*
      * The path name for the referenced folder in URI notation, relative to the
      * current folder. Read only.
      */
-    relativeURI: string
+    relativeURI:string;
 
     /*
      * Changes the path specification of the referenced folder.
@@ -782,13 +782,13 @@ declare class Folder {
      *
      * @return true on success.
      */
-    changePath(path: string): boolean
+    changePath(path:string):boolean;
 
     /*
      * Creates a folder at the location given by this object’s path property.
      * @return true if the folder was created successfully.
      */
-    create(): boolean
+    create():boolean;
 
     /*
      * Opens this folder in the platform-specific file browser (as if it had
@@ -796,7 +796,7 @@ declare class Folder {
      *
      * @return true immediately if the folder was opened successfully.
      */
-    execute(): boolean
+    execute():boolean;
 
     /*
      * param mask string. A search mask for file names. A string that can
@@ -817,7 +817,7 @@ declare class Folder {
      *
      * TODO: return `(File|Folder)[]` in TSC 1.4
      */
-    getFiles(mask?: string): (File|Folder)[]
+    getFiles(mask?:string):(File|Folder)[];
 
     /*
      * Retrieves the path for this folder relative to the specified base path or
@@ -828,7 +828,7 @@ declare class Folder {
      *
      * @reutrn a string containing the relative URI.
      */
-    getRelativeURI(basePath?: string): string
+    getRelativeURI(basePath?:string):string;
 
     /*
      *
@@ -842,7 +842,7 @@ declare class Folder {
      *
      * @return true if the folder is deleted successfully.
      */
-    remove(): boolean
+    remove():boolean;
 
     /*
      * Renames the associated folder. Does not resolve aliases; instead,
@@ -852,7 +852,7 @@ declare class Folder {
      *
      * @return true on success.
      */
-    rename(newName: string): boolean
+    rename(newName:string):boolean;
 
     /*
      * If this object references an alias or shortcut, this method resolves that
@@ -862,7 +862,7 @@ declare class Folder {
      * to which the alias resolves, or null if this object does not reference an
      * alias, or if the alias cannot be resolved.
      */
-    resolve(): Folder
+    resolve():Folder;
 
     /*
      * Opens the built-in platform-specific file-browsing dialog, and creates
@@ -877,5 +877,5 @@ declare class Folder {
      *
      * TODO: return `(File|Folder)` in TSC 1.4
      */
-    selectDlg(prompt_: string): File|Folder
+    selectDlg(prompt_:string):File|Folder;
 }
