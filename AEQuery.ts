@@ -11,11 +11,14 @@ class AEQuery extends JQuery<Layer> {
         first: (layer:Layer) => layer.index === 1,
         last: (layer:Layer) => layer.index === layer.containingComp.numLayers,
 
+        '3D': (layer:Layer) => (<AVLayer>layer).threeDLayer,
         shy: (layer:Layer) => layer.shy,
         solo: (layer:Layer) => layer.solo,
         selected: (layer:Layer) => layer.selected,
         locked: (layer:Layer) => layer.locked,
         enabled: (layer:Layer) => layer.enabled,
+        guide: (layer:Layer) => (<AVLayer>layer).guideLayer,
+        modified: (layer:Layer) => (<PropertyBase>layer).isModified,
         motionBlur: (layer:Layer) => (<AVLayer>layer).motionBlur,
         adjustment: (layer:Layer) => (<AVLayer>layer).adjustmentLayer,
         audioActive: (layer:Layer) => (<AVLayer>layer).audioActive,
@@ -25,6 +28,7 @@ class AEQuery extends JQuery<Layer> {
         hasTrackMatte: (layer:Layer) => (<AVLayer>layer).hasTrackMatte,
         'null': (layer:Layer) => layer.nullLayer,
         timeRemapEnabled: (layer:Layer) => (<AVLayer>layer).timeRemapEnabled,
+        trackMatte: (layer:Layer) => (<AVLayer>layer).isTrackMatte,
 
         nth: (layer:Layer, range:AEQRange) => {
             var result:boolean;
@@ -52,7 +56,7 @@ class AEQuery extends JQuery<Layer> {
                             argsData = args
                                 .split(';')
                                 .map(arg => {
-                                    var rangeRegexp:RegExp = /^(\d+(?:\.\d+)?)(?:(\.)?\.\.(\.)?(\d+(?:\.\d+)?))?$/;
+                                    var rangeRegexp:RegExp = /^(\d+(?:\.\d+)?)(\.)?\.\.(\.)?(\d+(?:\.\d+)?)$/;
                                     if (rangeRegexp.test(arg)) {
                                         let [match, start, includeStart1, includeEnd1, end] = arg.match(rangeRegexp);
                                         let includeStart = includeStart1 === '.';
@@ -64,6 +68,9 @@ class AEQuery extends JQuery<Layer> {
 
                                         return new AEQRange(parseFloat(start), includeStart, includeEnd, parseFloat(end));
                                     }
+
+                                    if (/^\d+(?:\.\d+)?$/.test(arg))
+                                        return parseFloat(arg);
 
                                     throw "Under construction";
                                 });
@@ -97,7 +104,7 @@ class AEQuery extends JQuery<Layer> {
                 return true;
 
             case 'function':
-                return (<Function>selector).call(layer);
+                return (<Function>selector).call(layer, layer);
 
             case 'object':
                 if (selector instanceof RegExp)
@@ -163,7 +170,7 @@ class AEQuery extends JQuery<Layer> {
     }
 
     public select(value:boolean = true):AEQuery {
-        this.each((i, el) => el.selected = value);
+        this.each((i, el) => { el.selected = value });
         return this;
     }
 
