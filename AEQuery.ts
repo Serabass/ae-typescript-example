@@ -150,6 +150,17 @@ class AEQuery extends JQuery<Layer> {
         });
     }
 
+    public '+'(object:AEQuery):AEQuery {
+        var ae:AEQuery = new AEQuery;
+        ae.each((i, el) => {
+            ae.push(el);
+        });
+        this.each((i, el) => {
+            ae.push(el);
+        });
+        return ae;
+    }
+
     /**
      * path === 'Transform / Position'
      * @param path

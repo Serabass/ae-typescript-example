@@ -4,6 +4,7 @@ class AECompQuery extends JQuery<any> {
         comp: (item:any) => item instanceof CompItem,
         folder: (item:any) => item instanceof FolderItem,
         footage: (item:any) => item instanceof FootageItem,
+
         hasVideo: (item:any) => item.hasVideo,
         hasAudio: (item:any) => item.hasAudio,
         selected: (item:any) => item.selected,
@@ -63,6 +64,20 @@ class AECompQuery extends JQuery<any> {
             }
 
             return this;
+        });
+    }
+
+    public duplicate():AECompQuery {
+        var ae:AECompQuery = new AECompQuery();
+
+        this.each((i, el:any) => ae.push(el.duplicate()));
+
+        return ae;
+    }
+
+    public remove() {
+        return this.each((i, el) => {
+            el.remove();
         });
     }
 }
