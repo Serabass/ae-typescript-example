@@ -1,10 +1,10 @@
-class AECompQuery extends JQuery<CompItem> {
+class AECompQuery extends JQuery<any> {
 
     public expr:JQueryExpr = {
 
     };
 
-    private compare(item:CompItem, selector:any) {
+    private compare(item:any, selector:any) {
         switch (typeof selector) {
             case 'string':
                 if (selector[0] === ':') {
@@ -53,7 +53,7 @@ class AECompQuery extends JQuery<CompItem> {
             var items = project.items;
 
             for (let i = 1; i <= items.length; i++) {
-                let item:CompItem = <CompItem>items[i];
+                let item:any = items[i];
                 if (this.compare(item, selector)) {
                     this.push(item);
                 }
