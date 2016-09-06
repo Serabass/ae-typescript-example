@@ -1,6 +1,5 @@
-(() => {
-    this.ae = new AEQuery();
-    var a:AEQuery = this.ae.query("Black Solid 7");
-    this.a = a.prop("transform / scale");
-    alert(this.a.prop);
-})();
+var ae = new AECompQuery(),
+    a:AECompQuery = <AECompQuery>ae.query("Comp 1")
+    ;
+
+alert(a.length);

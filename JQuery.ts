@@ -4,24 +4,13 @@ class UndoGroup {
         app.beginUndoGroup('AEQuery Undo Group');
         fn.call(this, this);
         app.endUndoGroup();
-    }
-}
-
-function addGetter(prop:string) {
-    alert(prop);
-    return function (target: Function) {
-        target.prototype[prop] = function (value?:any) {
-            if (value === void 0)
-                return this.first()[prop];
-
-            this.first()[prop] = value;
-        }
+        return this;
     }
 }
 
 class JQuery<T> extends UndoGroup {
     public length:number = 0;
-[index:number]:T;
+    [index:number]:T;
 
     constructor(public query:(...args) => JQuery<T>) {
         super();

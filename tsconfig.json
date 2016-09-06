@@ -8,7 +8,9 @@
   "files": [
     "typings/aftereffects.d.ts/ae.d.ts",
     "JQuery.ts",
+    "JQExprParser.ts",
     "AEQuery.ts",
+    "AECompQuery.ts",
     "ScriptExample.ts"
   ]
 }

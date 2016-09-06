@@ -86,50 +86,13 @@ class AEQuery extends JQuery<Layer> {
         }
     };
 
-    public compare(layer:Layer, selector:JQuerySelector) {
+    private compare(layer:Layer, selector:JQuerySelector) {
         switch (typeof selector) {
             case 'string':
                 if (selector[0] === ':') {
                     let name = (<string>selector).substr(1);
                     let names = name.split('+');
-                    let result = names.map(name => {
-                        var [match, negateSign, fnName, args] = name.match(/^(!)?(\w+)(?:\(([^)]+)\))?/);
-                        var negate = negateSign === '!';
-                        var fn:Function = this.expr[fnName];
-                        var result;
-                        var argsData;
-
-                        if (args) {
-                            argsData = args
-                                .split(';')
-                                .map(arg => {
-                                    var rangeRegexp:RegExp = /^(\d+(?:\.\d+)?)(\.)?\.\.(\.)?(\d+(?:\.\d+)?)$/;
-                                    if (rangeRegexp.test(arg)) {
-                                        let [match, start, includeStart1, includeEnd1, end] = arg.match(rangeRegexp);
-                                        let includeStart = includeStart1 === '.';
-                                        let includeEnd = includeEnd1 === '.';
-
-                                        if (end === void 0) {
-                                            end = start;
-                                        }
-
-                                        return new AEQRange(parseFloat(start), includeStart, includeEnd, parseFloat(end));
-                                    }
-
-                                    if (/^\d+(?:\.\d+)?$/.test(arg))
-                                        return parseFloat(arg);
-
-                                    throw "Under construction";
-                                });
-                        }
-
-                        if (!name)
-                            throw `Expr function with name ${name} not found!`;
-
-                        result = fn(layer, ...argsData);
-
-                        return negate ? !result : result;
-                    });
+                    let result = names.map(name => JQExprParser.parse.call(layer, this.expr, name));
 
                     for (var i = 0; i < result.length; i++) {
                         if (result[i] !== true)
@@ -142,9 +105,9 @@ class AEQuery extends JQuery<Layer> {
                 if (selector === '*')
                     return true;
                 /*
-                let matches:boolean[] = (<string>selector).split(/\s*,\s*!/)
-                    .map(string => this.compare(layer, string));
-                */
+                 let matches:boolean[] = (<string>selector).split(/\s*,\s*!/)
+                 .map(string => this.compare(layer, string));
+                 */
 
                 return layer.name === selector;
 
@@ -221,7 +184,9 @@ class AEQuery extends JQuery<Layer> {
     }
 
     public select(value:boolean = true):AEQuery {
-        this.each((i, el) => { el.selected = value });
+        this.each((i, el) => {
+            el.selected = value
+        });
         return this;
     }
 
