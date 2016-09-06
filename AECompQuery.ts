@@ -27,7 +27,6 @@ class AECompQuery extends JQuery<any> {
                     return true;
                 }
 
-
                 if (selector === '*')
                     return true;
 
@@ -45,9 +44,6 @@ class AECompQuery extends JQuery<any> {
             case 'object':
                 if (selector instanceof Array)
                     throw "Under construction";
-
-                if (selector.constructor.name.indexOf('Layer') >= 0)
-                    return true;
 
                 throw "Under construction";
             default:
