@@ -1,5 +1,5 @@
 var ae = new AECompQuery(),
-    a:AECompQuery = <AECompQuery>ae.query("Comp 1")
+    a:AECompQuery = <AECompQuery>ae.query(":selected")
     ;
 
 alert(a.length);

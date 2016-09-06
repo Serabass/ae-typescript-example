@@ -1,7 +1,14 @@
 class AECompQuery extends JQuery<any> {
 
     public expr:JQueryExpr = {
-
+        comp: (item:any) => item instanceof CompItem,
+        folder: (item:any) => item instanceof FolderItem,
+        footage: (item:any) => item instanceof FootageItem,
+        hasVideo: (item:any) => item.hasVideo,
+        hasAudio: (item:any) => item.hasAudio,
+        selected: (item:any) => item.selected,
+        useProxy: (item:any) => item.useProxy,
+        missing: (item:any) => item.footageMissing,
     };
 
     private compare(item:any, selector:any) {
