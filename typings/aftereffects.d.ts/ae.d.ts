@@ -3,6 +3,7 @@
 /// <reference path="./ui.d.ts" />
 /// <reference path="./ae.constants.d.ts" />
 /// <reference path="./ae.types.d.ts" />
+/// <reference path="../jquery.d.ts" />
 
 declare var alert:(message?, title?, errorIcon?) => void;
 declare var confirm:(message?, noAsDefault?, title?) => boolean;

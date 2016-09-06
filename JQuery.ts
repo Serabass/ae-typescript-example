@@ -1,19 +1,3 @@
-/**
- * Selectors that I want to see:
- * :shy+locked
- * :motionBlur, Solid 1
- * :solo+enabled
- * :text+!enabled
- *
- *
- * Features:
- *  - Break a layer
- *  - Break by Voronoi
- *  -
- */
-
-declare type JQuerySelector = string | number | Function | RegExp;
-declare type IteratorFn = (index:number, el:any) => any;
 
 class UndoGroup {
     public undoGroup(fn:Function) {

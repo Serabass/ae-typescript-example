@@ -1,10 +1,16 @@
-
-declare type PropAnimateOptions = {
-    startTime:number,
-    endTime:number,
-    stepFn:Function,
-    stepValue?:number
-};
+/**
+ * Selectors that I want to see:
+ * :shy+locked
+ * :motionBlur, Solid 1
+ * :solo+enabled
+ * :text+!enabled
+ *
+ *
+ * Features:
+ *  - Break a layer
+ *  - Break by Voronoi
+ *  -
+ */
 
 class AEQRange {
     constructor(public start:number,
@@ -42,7 +48,7 @@ class PropQuery extends UndoGroup {
 
 class AEQuery extends JQuery<Layer> {
 
-    public expr:{[key:string]:Function} = {
+    public expr:JQueryExpr = {
 
         text: (layer:Layer) => layer instanceof TextLayer,
         av: (layer:Layer) => layer instanceof AVLayer,
@@ -52,7 +58,7 @@ class AEQuery extends JQuery<Layer> {
         first: (layer:Layer) => layer.index === 1,
         last: (layer:Layer) => layer.index === layer.containingComp.numLayers,
 
-        '3D': (layer:Layer) => (<AVLayer>layer).threeDLayer,
+        '3d': (layer:Layer) => (<AVLayer>layer).threeDLayer,
         shy: (layer:Layer) => layer.shy,
         solo: (layer:Layer) => layer.solo,
         selected: (layer:Layer) => layer.selected,
