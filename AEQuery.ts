@@ -1,4 +1,45 @@
 
+declare type PropAnimateOptions = {
+    startTime:number,
+    endTime:number,
+    stepFn:Function,
+    stepValue?:number
+};
+
+class AEQRange {
+    constructor(public start:number,
+                public includeStart:boolean,
+                public includeEnd:boolean,
+                public end:number) {
+    }
+}
+
+class PropQuery extends UndoGroup {
+    // TODO Add a generics
+    constructor(public prop:Property) {
+        super();
+    }
+
+    public animate(options:PropAnimateOptions) {
+        options.stepValue = options.stepValue || 1;
+
+        for (var time = options.startTime; time <= options.endTime; time += options.stepValue) {
+            let value = this.prop.valueAtTime(time, true);
+            this.prop.setValueAtTime(time, options.stepFn(value, time))
+        }
+
+        return this;
+    }
+
+    public value(value?:any) {
+        if (value === void 0)
+            return this.prop.value;
+
+        this.prop.setValue(value);
+        return this;
+    }
+}
+
 class AEQuery extends JQuery<Layer> {
 
     public expr:{[key:string]:Function} = {
@@ -18,7 +59,7 @@ class AEQuery extends JQuery<Layer> {
         locked: (layer:Layer) => layer.locked,
         enabled: (layer:Layer) => layer.enabled,
         guide: (layer:Layer) => (<AVLayer>layer).guideLayer,
-        modified: (layer:Layer) => (<PropertyBase>layer).isModified,
+
         motionBlur: (layer:Layer) => (<AVLayer>layer).motionBlur,
         adjustment: (layer:Layer) => (<AVLayer>layer).adjustmentLayer,
         audioActive: (layer:Layer) => (<AVLayer>layer).audioActive,
@@ -94,7 +135,12 @@ class AEQuery extends JQuery<Layer> {
 
                 if (selector === '*')
                     return true;
+/*
+                let matches:boolean[] = (<string>selector).split(/\s*,\s*!/)
+                    .map(string => this.compare(layer, string));
 
+
+                */
                 return layer.name === selector;
 
             case 'number':
@@ -104,12 +150,12 @@ class AEQuery extends JQuery<Layer> {
                 return true;
 
             case 'function':
+                if (selector instanceof RegExp) // TODO Why the RegExp Object is a function?
+                    return (<RegExp>selector).test(layer.name);
+
                 return (<Function>selector).call(layer, layer);
 
             case 'object':
-                if (selector instanceof RegExp)
-                    return (<RegExp>selector).test(layer.name);
-
                 if (selector instanceof Array)
                     throw "Under construction";
 

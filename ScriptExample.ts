@@ -1,6 +1,7 @@
 
 (() => {
-    var ae:AEQuery = new AEQuery();
-    this.a = ae.query(':nth(2)');
-    this.a.select();
+    this.ae = new AEQuery();
+    var a:AEQuery = this.ae.query("Black Solid 7");
+    this.a = a.prop("transform / scale");
+    alert(this.p);
 })();

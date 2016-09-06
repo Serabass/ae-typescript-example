@@ -14,20 +14,6 @@
 
 declare type JQuerySelector = string | number | Function | RegExp;
 declare type IteratorFn = (index:number, el:any) => any;
-declare type PropAnimateOptions = {
-    startTime:number,
-    endTime:number,
-    stepFn:Function,
-    stepValue?:number
-};
-
-class AEQRange {
-    constructor(public start:number,
-                public includeStart:boolean,
-                public includeEnd:boolean,
-                public end:number) {
-    }
-}
 
 class UndoGroup {
     public undoGroup(fn:Function) {
@@ -37,21 +23,15 @@ class UndoGroup {
     }
 }
 
-class PropQuery extends UndoGroup {
-    // TODO Add a generics
-    constructor(public prop:Property) {
-        super();
-    }
+function addGetter(prop:string) {
+    alert(prop);
+    return function (target: Function) {
+        target.prototype[prop] = function (value?:any) {
+            if (value === void 0)
+                return this.first()[prop];
 
-    public animate(options:PropAnimateOptions) {
-        options.stepValue = options.stepValue || 1;
-
-        for (var time = options.startTime; time <= options.endTime; time += options.stepValue) {
-            let value = this.prop.valueAtTime(time, true);
-            this.prop.setValueAtTime(time, options.stepFn(value, time))
+            this.first()[prop] = value;
         }
-
-        return this;
     }
 }
 
@@ -59,7 +39,7 @@ class JQuery<T> extends UndoGroup {
     public length:number = 0;
 [index:number]:T;
 
-    constructor(public query:Function) {
+    constructor(public query:(...args) => JQuery<T>) {
         super();
     }
 
@@ -102,5 +82,6 @@ class JQuery<T> extends UndoGroup {
         return jQuery;
     }
 
-    public noop() {}
+    public noop() {
+    }
 }
