@@ -3,5 +3,5 @@
     this.ae = new AEQuery();
     var a:AEQuery = this.ae.query("Black Solid 7");
     this.a = a.prop("transform / scale");
-    alert(this.p);
+    alert(this.a.prop);
 })();

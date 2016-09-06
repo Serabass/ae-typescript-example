@@ -31,7 +31,7 @@ class PropQuery extends UndoGroup {
         return this;
     }
 
-    public value(value?:any) {
+    public value(value?:any):any | AEQuery {
         if (value === void 0)
             return this.prop.value;
 
