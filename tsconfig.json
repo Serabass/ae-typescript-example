@@ -5,6 +5,8 @@
   },
   "files": [
     "typings/aftereffects.d.ts/ae.d.ts",
+    "JQuery.ts",
+    "AEQuery.ts",
     "ScriptExample.ts"
   ]
 }
