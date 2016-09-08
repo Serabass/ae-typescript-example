@@ -16,7 +16,8 @@ declare var writeLn:(text:string) => void;
 /** When true, the specified object exists. */
 declare var isValid:(obj:Object) => boolean;
 
-declare class Layer {}
+declare class Layer {
+}
 
 declare class AEEffect {
     displayName:string;

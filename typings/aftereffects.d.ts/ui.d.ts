@@ -8,6 +8,8 @@ declare type Point = [number, number];
 
 declare type Alignment = number | 'top' | 'bottom' | 'left' | 'right' | 'fill' | 'center';
 
+declare type UIEventHandler = (e:UIEvent) => void;
+
 declare module _ScriptUI {
     export enum Alignment {
         TOP,
@@ -217,6 +219,32 @@ interface _TitleLayout {
     truncate: string;
 }
 
+declare module AEComponentTypes {
+
+    declare module CreationProperties {
+        declare type Button = {
+            name?: string;
+        }
+        declare type Checkbox = {
+            name?: string;
+        }
+        declare type DropdownList = {
+            name?: string;
+            items?: string[];
+        }
+        declare type EditText = {
+            name?: string;
+            readonly?: boolean;
+            noecho?: boolean;
+            enterKeySignalsOnChange?: boolean;
+            borderless?: boolean;
+            multiline?: boolean;
+            scrollable?: boolean;
+        }
+    }
+
+}
+
 declare class _WindowOrContainer {
     alignChildren:Alignment | [Alignment, Alignment];
     alignment:Alignment | [Alignment, Alignment];
@@ -241,9 +269,9 @@ declare class _WindowOrContainer {
     window:Window;
     windowBounds:Bounds;
 
-    add(type:'button', bounds?:Bounds, text?:string, creation_properties?:{name?: string;}):Button;
-    add(type:'checkbox', bounds?:Bounds, text?:string, creation_properties?:{name?: string;}):Checkbox;
-    add(type:'dropdownlist', bounds?:Bounds, items?:string[], creation_properties?:{name?: string; items?: string[];}):DropDownList;
+    add(type:'button', bounds?:Bounds, text?:string, creation_properties?:AEComponentTypes.CreationProperties.Button):Button;
+    add(type:'checkbox', bounds?:Bounds, text?:string, creation_properties?:AEComponentTypes.CreationProperties.Checkbox):Checkbox;
+    add(type:'dropdownlist', bounds?:Bounds, items?:string[], creation_properties?:AEComponentTypes.CreationProperties.DropdownList):DropDownList;
     add(type:'edittext', bounds?:Bounds, text?:string, creation_properties?:{name?: string; readonly?: boolean; noecho?: boolean; enterKeySignalsOnChange?: boolean; borderless?: boolean; multiline?: boolean; scrollable?: boolean;}):EditText;
     add(type:'flashplayer', bounds?:Bounds, movieToLoad?:string | File, creation_properties?:{name?: string;}):FlashPlayer;
     add(type:'group', bounds?:Bounds, creation_properties?:{name?: string;}):Group;
@@ -260,7 +288,7 @@ declare class _WindowOrContainer {
     add(type:'tabbedpanel', bounds?:Bounds, text?:string, creation_properties?:{name?: string;}):TabbedPanel;
     add(type:'treeview', bounds?:Bounds, items?:string[], creation_properties?:{name?: string; itmes?: string[];}):TreeView;
 
-    addEventListener(eventName:string, handler:(e:UIEvent) => void, capturePhase?:boolean):void;
+    addEventListener(eventName:string, handler:UIEventHandler, capturePhase?:boolean):void;
 
     dispatchEvent(eventObj:UIEvent):boolean;
 
@@ -274,7 +302,7 @@ declare class _WindowOrContainer {
     remove(text:string):void;
     remove(child:any):void;
 
-    removeEventListener(eventName:string, handler:(e:UIEvent) => void, capturePhase?:boolean):void;
+    removeEventListener(eventName:string, handler:UIEventHandler, capturePhase?:boolean):void;
 
     show():any;
 
@@ -357,7 +385,7 @@ declare class Group extends _Container {
 }
 
 declare class __Control {
-    addEventListener(eventName:string, handler:(e:UIEvent) => void, capturePhase?:boolean):void;
+    addEventListener(eventName:string, handler:UIEventHandler, capturePhase?:boolean):void;
 
     dispatchEvent(eventObj:UIEvent):boolean;
 
@@ -365,7 +393,7 @@ declare class __Control {
 
     notify(event:string):void;
 
-    removeEventListener(eventName:string, handler:(e:UIEvent) => void, capturePhase?:boolean):void;
+    removeEventListener(eventName:string, handler:UIEventHandler, capturePhase?:boolean):void;
 
     show():any;
 
