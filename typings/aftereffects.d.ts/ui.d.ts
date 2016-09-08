@@ -221,18 +221,18 @@ interface _TitleLayout {
 
 declare module AEComponentTypes {
 
-    declare module CreationProperties {
-        declare type Button = {
+    module CreationProperties {
+        type Button = {
             name?: string;
         }
-        declare type Checkbox = {
+        type Checkbox = {
             name?: string;
         }
-        declare type DropdownList = {
+        type DropdownList = {
             name?: string;
             items?: string[];
         }
-        declare type EditText = {
+        type EditText = {
             name?: string;
             readonly?: boolean;
             noecho?: boolean;

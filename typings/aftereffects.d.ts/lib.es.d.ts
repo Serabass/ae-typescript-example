@@ -140,7 +140,7 @@ declare var Object:{
 
     /** Reports whether an object is still valid. */
     isValid(what): boolean;
-}
+};
 
 /**
  * Creates a new function.
@@ -197,7 +197,7 @@ declare var Function:{
     new (...args:string[]): Function;
     (...args:string[]): Function;
     prototype: Function;
-}
+};
 
 interface IArguments {
     [index: number]: any;
@@ -374,7 +374,7 @@ declare var String:{
     (value?:any): string;
     prototype: String;
     fromCharCode(...codes:number[]): string;
-}
+};
 
 interface Boolean {
     toJSON(key?:any): string;
@@ -383,7 +383,7 @@ declare var Boolean:{
     new (value?:any): Boolean;
     (value?:any): boolean;
     prototype: Boolean;
-}
+};
 
 interface Number {
     /**
@@ -451,7 +451,7 @@ declare var Number:{
      * JavaScript displays POSITIVE_INFINITY values as infinity.
      */
     POSITIVE_INFINITY: number;
-}
+};
 
 interface Math {
     /** The mathematical constant e. This is Euler's number, the base of natural logarithms. */
@@ -743,7 +743,7 @@ declare var Date:{
      */
     UTC(year:number, month:number, date?:number, hours?:number, minutes?:number, seconds?:number, ms?:number): number;
     now(): number;
-}
+};
 
 interface RegExpMatchArray extends Array<string> {
     index?: number;
@@ -829,7 +829,7 @@ declare var RegExp:{
     /** The string after the match. */
     rightContext: string;
     ["$'"]: string;
-}
+};
 
 interface Error {
     name: string;
@@ -839,7 +839,7 @@ declare var Error:{
     new (message?:string): Error;
     (message?:string): Error;
     prototype: Error;
-}
+};
 
 interface EvalError extends Error {
 }
@@ -847,7 +847,7 @@ declare var EvalError:{
     new (message?:string): EvalError;
     (message?:string): EvalError;
     prototype: EvalError;
-}
+};
 
 interface RangeError extends Error {
 }
@@ -855,7 +855,7 @@ declare var RangeError:{
     new (message?:string): RangeError;
     (message?:string): RangeError;
     prototype: RangeError;
-}
+};
 
 interface ReferenceError extends Error {
 }
@@ -863,7 +863,7 @@ declare var ReferenceError:{
     new (message?:string): ReferenceError;
     (message?:string): ReferenceError;
     prototype: ReferenceError;
-}
+};
 
 interface SyntaxError extends Error {
 }
@@ -871,7 +871,7 @@ declare var SyntaxError:{
     new (message?:string): SyntaxError;
     (message?:string): SyntaxError;
     prototype: SyntaxError;
-}
+};
 
 interface TypeError extends Error {
 }
@@ -879,7 +879,7 @@ declare var TypeError:{
     new (message?:string): TypeError;
     (message?:string): TypeError;
     prototype: TypeError;
-}
+};
 
 interface URIError extends Error {
 }
@@ -887,7 +887,7 @@ declare var URIError:{
     new (message?:string): URIError;
     (message?:string): URIError;
     prototype: URIError;
-}
+};
 
 interface JSON {
     /**
@@ -1101,4 +1101,4 @@ declare var Array:{
     <T>(...items:T[]): T[];
     isArray(arg:any): boolean;
     prototype: Array<any>;
-}
+};
