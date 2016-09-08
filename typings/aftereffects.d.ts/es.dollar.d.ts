@@ -222,7 +222,7 @@ declare class $ {
      *
      * @param value string The new value
      */
-    static setenv(envname:string, value:string):void
+    static setenv(envname:string, value:string):void;
 
     /*
      * Suspends the calling thread for the given number of milliseconds.

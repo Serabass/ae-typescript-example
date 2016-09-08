@@ -272,7 +272,7 @@ declare class File {
      *
      * @return true on success, false if there are I/O errors.
      */
-    close():boolean
+    close():boolean;
 
     /*
      * Copies this object’s referenced file to the specified target location.
@@ -294,7 +294,7 @@ declare class File {
      *
      * @return true if the operation was successful, false otherwise.
      */
-    createAlias(path?:string):boolean
+    createAlias(path?:string):boolean;
 
     /*
      * Opens this file using the appropriate application, as if it had been

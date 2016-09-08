@@ -13,6 +13,10 @@ class AECompQuery extends JQuery<any> {
     };
 
     private compare(item:any, selector:any) {
+
+        if (selector === '*' || selector === void 0)
+            return true;
+
         switch (typeof selector) {
             case 'string':
                 if (selector[0] === ':') {
@@ -28,13 +32,7 @@ class AECompQuery extends JQuery<any> {
                     return true;
                 }
 
-                if (selector === '*')
-                    return true;
-
                 return item.name === selector;
-
-            case 'undefined':
-                return true;
 
             case 'function':
                 if (selector instanceof RegExp) // TODO Why the RegExp Object is a function?

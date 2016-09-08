@@ -8,6 +8,9 @@
 declare var alert:(message?, title?, errorIcon?) => void;
 declare var confirm:(message?, noAsDefault?, title?) => boolean;
 declare var prompt:(prompt?, defaultText?, title?) => string;
+declare var localize:(string:string) => string;
+declare var AECommandLineRenderer:() => void;
+declare var garbageCollect:() => void;
 declare var escape:(string:string) => string;
 declare var app:Application;
 declare var system:System;

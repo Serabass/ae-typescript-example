@@ -87,6 +87,10 @@ class AEQuery extends JQuery<Layer> {
     };
 
     private compare(layer:Layer, selector:JQuerySelector) {
+
+        if (selector === '*' || selector === void 0)
+            return true;
+
         switch (typeof selector) {
             case 'string':
                 if (selector[0] === ':') {
@@ -102,8 +106,6 @@ class AEQuery extends JQuery<Layer> {
                     return true;
                 }
 
-                if (selector === '*')
-                    return true;
                 /*
                  let matches:boolean[] = (<string>selector).split(/\s*,\s*!/)
                  .map(string => this.compare(layer, string));
@@ -113,9 +115,6 @@ class AEQuery extends JQuery<Layer> {
 
             case 'number':
                 return layer.index === selector;
-
-            case 'undefined':
-                return true;
 
             case 'function':
                 if (selector instanceof RegExp) // TODO Why the RegExp Object is a function?
