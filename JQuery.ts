@@ -51,7 +51,7 @@ class JQuery<T> extends UndoGroup {
 
     public filter(fn:IteratorFn):JQuery<T> {
         var jQuery:JQuery<T> = new JQuery<T>(this.query);
-        this.each((i, el) => jQuery.push(el));
+        this.each((i, el) => fn(el, i) ? jQuery.push(el) : true);
         return jQuery;
     }
 
