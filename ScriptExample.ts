@@ -1,5 +1,5 @@
 var ae = new AEQuery(),
-    a:AEQuery = <AEQuery>ae.query(1)
+    layer:AEQuery = <AEQuery>ae.query(1),
+    prop = layer.prop('Transform / Position')
     ;
 
-alert(a.prop('Transform / Position').atTime("00:15"));

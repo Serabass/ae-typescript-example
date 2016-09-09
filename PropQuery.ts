@@ -74,7 +74,7 @@ class PropQuery extends UndoGroup {
         return this.prop.keyValue(keyIndex);
     }
 
-    public val<T>(key:string, value?:T):T|PropQuery {
+    private _val<T>(key:string, value?:T):T|PropQuery {
         if (value === void 0)
             return this.prop[key];
 
@@ -95,7 +95,7 @@ class PropQuery extends UndoGroup {
     }
 
     public selected(value?:boolean) {
-        return this.val<boolean>('selected', value);
+        return this._val<boolean>('selected', value);
     }
 
     public selectedKeys() {
@@ -119,7 +119,7 @@ class PropQuery extends UndoGroup {
     }
 
     public enabled(value?:boolean) {
-        return this.val<boolean>('enabled', value);
+        return this._val<boolean>('enabled', value);
     }
 
     public enumerable(propName:string) {
@@ -135,8 +135,23 @@ class PropQuery extends UndoGroup {
         return this;
     }
 
-    public remove(keyIndex:number) {
-        this.prop.removeKey(keyIndex);
+    public removeKeys(keyIndex:number | number[]) {
+        if (typeof keyIndex === 'number') {
+            this.prop.removeKey(keyIndex);
+        } else if (keyIndex instanceof Array) {
+            for (let i = 0; i < keyIndex.length; i++) {
+                this.prop.removeKey(i);
+            }
+        }
+
+        return this;
+    }
+
+    public removeAllKeys() {
+        while (this.prop.numKeys > 0) {
+            this.prop.removeKey(1);
+        }
+
         return this;
     }
 

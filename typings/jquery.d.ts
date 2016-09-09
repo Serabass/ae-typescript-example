@@ -7,6 +7,8 @@ declare type TimeValue = number | string | Time | any | any[];
 declare type PropAnimateOptions = {
     startTime:number,
     endTime:number,
+
+    // stepFn must be compatible with jQuery Easing Plugin
     stepFn:Function,
     stepValue?:number
 }

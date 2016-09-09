@@ -6,6 +6,8 @@ class Time {
     public seconds:number;
     public milliseconds:number;
 
+    public static regExp:RegExp = /^(\d+):(\d+)(?:.(\d+))?$/;
+
     public static zeroPad(s:number):string {
         if (+s >= 10)
             return s.toString();
@@ -20,7 +22,7 @@ class Time {
     constructor(time:TimeValue) {
         switch (typeof time) {
             case 'string':
-                let rgx = /^(\d+):(\d+)(?:.(\d+))?$/;
+                let rgx = Time.regExp;
                 if (rgx.test(<string>time)) {
                     let [match, m, s, ms] = (<string>time).match(rgx);
                     this.minutes = parseInt(m, 10);

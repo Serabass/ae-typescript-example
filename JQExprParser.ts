@@ -1,10 +1,12 @@
 class JQExprParser {
 
-    static parseLexeme(lexeme:string) {
+    public static numberRegExp:RegExp = /^\d+(?:\.\d+)?$/;
+
+    public static parseLexeme(lexeme:string) {
         throw "Under construction";
     }
 
-    static parse(expr:JQueryExpr, name:string) {
+    public static parse(expr:JQueryExpr, name:string) {
         var [match, negateSign, fnName, args] = name.match(/^(!)?(\w+)(?:\(([^)]+)\))?/);
         var negate = negateSign === '!';
         var fn:Function = expr[fnName];
@@ -15,20 +17,13 @@ class JQExprParser {
             argsData = args
                 .split(';')
                 .map(arg => {
-                    var rangeRegexp:RegExp = /^(\d+(?:\.\d+)?)(\.)?\.\.(\.)?(\d+(?:\.\d+)?)$/;
-                    if (rangeRegexp.test(arg)) {
-                        let [match, start, includeStart1, includeEnd1, end] = arg.match(rangeRegexp);
-                        let includeStart = includeStart1 === '.';
-                        let includeEnd = includeEnd1 === '.';
+                    if (AEQRange.regExp.test(arg))
+                        return AEQRange.from(arg);
 
-                        if (end === void 0) {
-                            end = start;
-                        }
+                    if (Time.regExp.test(arg))
+                        return Time.from(arg);
 
-                        return new AEQRange(parseFloat(start), includeStart, includeEnd, parseFloat(end));
-                    }
-
-                    if (/^\d+(?:\.\d+)?$/.test(arg))
+                    if (JQExprParser.numberRegExp.test(arg))
                         return parseFloat(arg);
 
                     throw "Under construction";
