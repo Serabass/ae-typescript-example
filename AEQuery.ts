@@ -16,37 +16,37 @@ class AEQuery extends JQuery<Layer> {
 
     public expr:JQueryExpr = {
 
-        text: (layer:any) => layer instanceof TextLayer,
-        av: (layer:any) => layer instanceof AVLayer,
+        text: (layer) => layer instanceof TextLayer,
+        av: (layer) => layer instanceof AVLayer,
 
-        even: (layer:any) => layer.index % 2 === 0,
-        odd: (layer:any) => layer.index % 2 !== 0,
-        first: (layer:any) => layer.index === 1,
-        last: (layer:any) => layer.index === layer.containingComp.numLayers,
+        even: (layer) => layer.index % 2 === 0,
+        odd: (layer) => layer.index % 2 !== 0,
+        first: (layer) => layer.index === 1,
+        last: (layer) => layer.index === layer.containingComp.numLayers,
 
-        '3d': (layer:any) => (<AVLayer>layer).threeDLayer,
-        shy: (layer:any) => layer.shy,
-        solo: (layer:any) => layer.solo,
-        selected: (layer:any) => layer.selected,
-        locked: (layer:any) => layer.locked,
-        enabled: (layer:any) => layer.enabled,
-        guide: (layer:any) => (<AVLayer>layer).guideLayer,
+        '3d': (layer) => (<AVLayer>layer).threeDLayer,
+        shy: (layer) => layer.shy,
+        solo: (layer) => layer.solo,
+        selected: (layer) => layer.selected,
+        locked: (layer) => layer.locked,
+        enabled: (layer) => layer.enabled,
+        guide: (layer) => (<AVLayer>layer).guideLayer,
 
-        motionBlur: (layer:any) => (<AVLayer>layer).motionBlur,
-        adjustment: (layer:any) => (<AVLayer>layer).adjustmentLayer,
-        audioActive: (layer:any) => (<AVLayer>layer).audioActive,
-        audioEnabled: (layer:any) => (<AVLayer>layer).audioEnabled,
-        effectsActive: (layer:any) => (<AVLayer>layer).effectsActive,
-        hasVideo: (layer:any) => layer.hasVideo,
-        hasTrackMatte: (layer:any) => (<AVLayer>layer).hasTrackMatte,
-        'null': (layer:any) => layer.nullLayer,
-        timeRemapEnabled: (layer:any) => (<AVLayer>layer).timeRemapEnabled,
-        trackMatte: (layer:any) => (<AVLayer>layer).isTrackMatte,
-        hasParent: (layer:any) => (<AVLayer>layer).parent !== null,
+        motionBlur: (layer) => (<AVLayer>layer).motionBlur,
+        adjustment: (layer) => (<AVLayer>layer).adjustmentLayer,
+        audioActive: (layer) => (<AVLayer>layer).audioActive,
+        audioEnabled: (layer) => (<AVLayer>layer).audioEnabled,
+        effectsActive: (layer) => (<AVLayer>layer).effectsActive,
+        hasVideo: (layer) => layer.hasVideo,
+        hasTrackMatte: (layer) => (<AVLayer>layer).hasTrackMatte,
+        'null': (layer) => layer.nullLayer,
+        timeRemapEnabled: (layer) => (<AVLayer>layer).timeRemapEnabled,
+        trackMatte: (layer) => (<AVLayer>layer).isTrackMatte,
+        hasParent: (layer) => (<AVLayer>layer).parent !== null,
 
-        nth: (layer:any, range:AEQRange) => range.contains(layer.index),
+        nth: (layer, range:AEQRange) => range.contains(layer.index),
 
-        within: (layer:any, time1:Time, time2?:Time) => {
+        within: (layer, time1:Time, time2?:Time) => {
             if (time2 === void 0)
                 return layer.startTime === time1.value;
 
@@ -54,26 +54,26 @@ class AEQuery extends JQuery<Layer> {
                 && layer.outPoint >= time1.value && layer.outPoint <= time2.value;
         },
 
-        starts: (layer:any, time1:Time, time2?:Time) => {
+        starts: (layer, time1:Time, time2?:Time) => {
             if (time2 === void 0)
                 return layer.inPoint === time1.value;
 
             return layer.inPoint >= time1.value && layer.inPoint <= time2.value;
         },
 
-        ends: (layer:any, time1:Time, time2?:Time) => {
+        ends: (layer, time1:Time, time2?:Time) => {
             if (time2 === void 0)
                 return layer.outPoint === time1.value;
 
             return layer.outPoint >= time1.value && layer.outPoint <= time2.value;
         },
 
-        spreadTest: (layer:any, ...args:any[]) => {
+        spreadTest: (layer, ...args:any[]) => {
             alert(args[0] === null);
         }
     };
 
-    private compare(layer:any, selector:JQueryLayerSelector) {
+    private compare(layer, selector:JQueryLayerSelector) {
 
         if (selector === '*' || selector === void 0)
             return true;
@@ -123,7 +123,7 @@ class AEQuery extends JQuery<Layer> {
     }
 
     constructor(public context?:JQueryContext) {
-        super(<(...args) => JQuery<Layer>>context);
+        super(<(...args) => AEQuery>context);
 
         if (typeof context !== 'function') {
             super((selector:JQueryLayerSelector, comp:JQueryCompSelector = context || <CompItem>app.project.activeItem) => {
@@ -214,7 +214,16 @@ class AEQuery extends JQuery<Layer> {
     }
 
     public filter(selector:JQueryLayerSelector):AEQuery {
-        return (new Array<Layer>()).filter.call(this, (layer:Layer) => this.compare(layer, selector));
+        var self = this;
+        return <AEQuery>new AEQuery(function (selector:JQueryLayerSelector) {
+            self.each((i, layer) => {
+                if (self.compare(layer, selector)) {
+                    this.push(layer);
+                }
+            });
+
+            return this;
+        }).query(selector);
     }
 
     private _val<T>(key:string, value?:T):T|AEQuery {

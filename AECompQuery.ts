@@ -10,7 +10,7 @@ class AECompQuery extends JQuery<any> {
         selected: (item:any) => item.selected,
         active: (item:any) => item === app.project.activeItem,
         useProxy: (item:any) => item.useProxy,
-        missing: (item:any) => item.footageMissing,
+        footageMissing: (item:any) => item.footageMissing,
     };
 
     private compare(item:any, selector:any) {
@@ -84,6 +84,6 @@ class AECompQuery extends JQuery<any> {
     }
 
     public toString():string {
-        return `AECompQuery [${this.length} layers]`;
+        return `AECompQuery [${this.length} layer${this.length === 1 ? '' : 's'}]`;
     }
 }
