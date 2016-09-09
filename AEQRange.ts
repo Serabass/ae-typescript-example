@@ -20,6 +20,14 @@ class AEQRange {
                 public end:number) {
     }
 
+    public contains(value:number) {
+        var result:boolean;
+        result = this.includeStart ? value >= this.start : value > this.start;
+        result = result && (this.includeEnd ? value <= this.end : value < this.end);
+
+        return result;
+    }
+
     public toString():string {
         return this.start
             + (this.includeStart ? '.' : '')

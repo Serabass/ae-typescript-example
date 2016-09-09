@@ -43,13 +43,7 @@ class AEQuery extends JQuery<Layer> {
         timeRemapEnabled: (layer:any) => (<AVLayer>layer).timeRemapEnabled,
         trackMatte: (layer:any) => (<AVLayer>layer).isTrackMatte,
 
-        nth: (layer:any, range:AEQRange) => {
-            var result:boolean;
-            result = range.includeStart ? layer.index >= range.start : layer.index > range.start;
-            result = result && (range.includeEnd ? layer.index <= range.end : layer.index < range.end);
-
-            return result;
-        },
+        nth: (layer:any, range:AEQRange) => range.contains(layer.index),
 
         within: (layer:any, time1:Time, time2?:Time) => {
             if (time2 === void 0)
