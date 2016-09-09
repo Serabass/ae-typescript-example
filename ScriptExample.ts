@@ -1,6 +1,5 @@
-var ae = new AECompQuery(),
-    a:AECompQuery = <AECompQuery>ae.query(':active')
+var ae = new AEQuery(),
+    a:AEQuery = <AEQuery>ae.query(1)
     ;
 
-var t = Time.from([12, 34, 55]);
-alert(t);
+alert(a.prop('Transform / Position').atTime("00:15"));

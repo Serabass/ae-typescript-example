@@ -13,22 +13,20 @@ class Time {
         return '0' + s;
     }
 
-    public static from(time:AETime):Time {
+    public static from(time:TimeValue):Time {
         return new this(time);
     }
 
-    constructor(time:AETime) {
+    constructor(time:TimeValue) {
         switch (typeof time) {
             case 'string':
-                let match;
                 let rgx = /^(\d+):(\d+)(?:.(\d+))?$/;
                 if (rgx.test(<string>time)) {
-                    let m, s, ms;
-                    [match, m, s, ms] = (<string>time).match(rgx);
+                    let [match, m, s, ms] = (<string>time).match(rgx);
                     this.minutes = parseInt(m, 10);
                     this.seconds = parseInt(s);
 
-                    this.milliseconds = parseInt(ms, 10);
+                    this.milliseconds = parseInt(ms || "0", 10);
 
                 } else {
                     throw "Under construction";
@@ -48,7 +46,7 @@ class Time {
 
                     var [m, s, ms] = time;
 
-                    this.minutes = +m;
+                    this.minutes = +(m || 0);
                     this.seconds = +(s || 0);
                     this.milliseconds = +(ms || 0);
                 } else {
@@ -59,7 +57,7 @@ class Time {
                 break;
         }
 
-        this.value = (this.minutes * 60) + this.seconds;
+        this.value = (this.minutes * 60) + this.seconds + (this.milliseconds / 1000);
     }
 
     // TODO Complete all getters and setters
@@ -82,10 +80,6 @@ class Time {
             ms = '0' + ms;
         }
 
-        return [
-            Time.zeroPad(this.minutes),
-            Time.zeroPad(this.seconds)
-        ].join(':') + '.' + ms
-            ;
+        return `${Time.zeroPad(this.minutes)}:${Time.zeroPad(this.seconds)}.${ms}`;
     }
 }
