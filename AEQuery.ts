@@ -242,7 +242,7 @@ class AEQuery extends JQuery<Layer> {
         return this._val<boolean>('enabled', value);
     }
 
-    public 'null'(value?:boolean) {
+    public 'null'() {
         return this.first().nullLayer;
     }
 
