@@ -198,7 +198,7 @@ class AEQuery extends JQuery<Layer> {
             }
         }
 
-        return new PropQuery(prop);
+        return new PropQuery(prop, path);
     }
 
     public props(selector:string):any {

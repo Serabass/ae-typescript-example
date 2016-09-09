@@ -1,6 +1,6 @@
 class PropQuery extends UndoGroup {
     // TODO Add a generics
-    constructor(public prop:any) {
+    constructor(public prop:any, public path:string = null) {
         super();
     }
 
@@ -36,40 +36,34 @@ class PropQuery extends UndoGroup {
 
     public animate(options:PropAnimateOptions) {
         options.stepValue = options.stepValue || 1;
-
-        for (var time = options.startTime; time <= options.endTime; time += options.stepValue) {
-            let value = this.prop.valueAtTime(time, true);
-            this.prop.setValueAtTime(time, options.stepFn(value, time))
-        }
-
-        return this;
+        return this.call(prop => {
+            for (var time = options.startTime; time <= options.endTime; time += options.stepValue) {
+                let value = this.prop.valueAtTime(time, true);
+                prop.setValueAtTime(time, options.stepFn(value, time))
+            }
+        });
     }
 
     public val(value?:any):any | PropQuery {
         if (value === void 0)
             return this.prop.value;
 
-        this.prop.setValue(value);
-        return this;
+        return this.call(prop => prop.setValue(value));
     }
 
     public atTime(time:TimeValue, value?:PropertyValue):any | PropQuery {
         var aeTime = Time.from(time);
 
-        if (value !== void 0) {
-            this.prop.setValueAtTime(aeTime.value, value);
-            return this;
-        }
+        if (value !== void 0)
+            return this.call(prop => prop.setValueAtTime(aeTime.value, value));
 
         return this.prop.valueAtTime(aeTime.value, false /* ? */);
     }
 
     public keyValue(keyIndex:number, value?:PropertyValue) {
 
-        if (value !== void 0) {
-            this.prop.setValueAtKey(keyIndex, value);
-            return this;
-        }
+        if (value !== void 0)
+            return this.call(prop => prop.setValueAtKey(keyIndex, value));
 
         return this.prop.keyValue(keyIndex);
     }
@@ -78,8 +72,7 @@ class PropQuery extends UndoGroup {
         if (value === void 0)
             return this.prop[key];
 
-        this.prop[key] = value;
-        return this;
+        return this.call(prop => prop[key] = value);
     }
 
     public call(fn:(prop:Property, q:PropQuery) => void):PropQuery {
@@ -136,28 +129,23 @@ class PropQuery extends UndoGroup {
     }
 
     public remove() {
-        this.prop.remove();
-        return this;
+        return this.call(prop => prop.remove());
     }
 
-    public removeKeys(keyIndex:number | number[]) {
-        if (typeof keyIndex === 'number') {
-            this.prop.removeKey(keyIndex);
-        } else if (keyIndex instanceof Array) {
-            for (let i = 0; i < keyIndex.length; i++) {
-                this.prop.removeKey(i);
+    public removeKeys(...args:number[]) {
+        return this.call(prop => {
+            for (let i = 0; i < args.length; i++) {
+                prop.removeKey(args[i]);
             }
-        }
-
-        return this;
+        });
     }
 
     public removeAllKeys() {
-        while (this.prop.numKeys > 0) {
-            this.prop.removeKey(1);
-        }
-
-        return this;
+        return this.call(prop => {
+            while (prop.numKeys > 0) {
+                prop.removeKey(1);
+            }
+        });
     }
 
     public isModified() {
@@ -174,5 +162,20 @@ class PropQuery extends UndoGroup {
 
     public exprEnabled(value?:boolean):boolean | PropQuery {
         return this._val<boolean>('expressionEnabled', value);
+    }
+
+    public keySelected(keyIndex:number, selected?:boolean):boolean | PropQuery {
+        if (selected === void 0)
+            return this.prop.selectedKeys.indexOf(keyIndex) >= 0;
+
+        return this.call(prop => prop.setSelectedAtKey(keyIndex, selected));
+    }
+
+    public addKey(time:TimeValue) {
+        return this.call((prop) => prop.addKey(Time.from(time).value));
+    }
+
+    public toString() {
+        return `PropQuery "${this.path}"`;
     }
 }
