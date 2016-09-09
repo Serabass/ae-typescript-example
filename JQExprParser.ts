@@ -15,8 +15,12 @@ class JQExprParser {
 
         if (args) {
             argsData = args
-                .split(';')
+                .split(/\s*;\s*/)
                 .map(arg => {
+
+                    if ( ! arg)
+                        return void 0;
+
                     if (AEQRange.regExp.test(arg))
                         return AEQRange.from(arg);
 

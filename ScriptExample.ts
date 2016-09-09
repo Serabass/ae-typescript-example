@@ -1,5 +1,6 @@
 var ae = new AEQuery(),
-    layer:AEQuery = <AEQuery>ae.query(1),
-    prop = layer.prop('Transform / Position')
+    a:AEQuery = <AEQuery>ae.query(":nth(2>..<5)"),
+    prop = a.prop('Transform / Position')
     ;
 
+alert(a.length);

@@ -49,6 +49,22 @@ class AEQuery extends JQuery<Layer> {
             result = result && (range.includeEnd ? layer.index <= range.end : layer.index < range.end);
 
             return result;
+        },
+
+        // TODO Test it!
+        belongs: (layer:any, time1:Time, time2?:Time) => {
+            if (time2 === void 0)
+                return layer.startTime === time1.value;
+
+            return layer.startTime >= time1.value && layer.startTime <= time2.value
+                && layer.outPoint >= time1.value && layer.outPoint <= time2.value;
+        },
+
+        startsAt: (layer:any, time1:Time, time2?:Time) => {
+            if (time2 === void 0)
+                return layer.startTime === time1.value;
+
+            return layer.startTime >= time1.value && layer.startTime <= time2.value;
         }
     };
 
@@ -181,6 +197,54 @@ class AEQuery extends JQuery<Layer> {
 
         var ae:AEQuery = new AEQuery();
         return this.each((i, el) => el.setParentWithJump(ae.query(parent).first()));
+    }
+
+    private _val<T>(key:string, value?:T):T|AEQuery {
+        if (value === void 0)
+            return this.first()[key];
+
+        this.first()[key] = value;
+        return this;
+    }
+
+    public startTime(value?:number) {
+        return this._val<number>('startTime', value);
+    }
+
+    public active(value?:boolean) {
+        return this._val<boolean>('active', value);
+    }
+
+    public enabled(value?:boolean) {
+        return this._val<boolean>('enabled', value);
+    }
+
+    public 'null'(value?:boolean) {
+        return this.first().nullLayer;
+    }
+
+    public startTime(value?:number) {
+        return this._val<number>('startTime', value);
+    }
+
+    public quality(value?:LayerQuality) {
+        return this._val<LayerQuality>('quality', value);
+    }
+
+    public samplingQuality(value?:LayerSamplingQuality) {
+        return this._val<LayerSamplingQuality>('quality', value);
+    }
+
+    public shy(value?:boolean) {
+        return this._val<boolean>('shy', value);
+    }
+
+    public solo(value?:boolean) {
+        return this._val<boolean>('solo', value);
+    }
+
+    public selected(value?:boolean) {
+        return this._val<boolean>('selected', value);
     }
 
     public toString():string {
