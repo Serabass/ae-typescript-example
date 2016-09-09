@@ -68,7 +68,7 @@ class AEQuery extends JQuery<Layer> {
         }
     };
 
-    private compare(layer:any, selector:JQuerySelector) {
+    private compare(layer:any, selector:JQueryLayerSelector) {
 
         if (selector === '*' || selector === void 0)
             return true;
@@ -120,7 +120,7 @@ class AEQuery extends JQuery<Layer> {
     constructor(compItem:CompItem = <CompItem>app.project.activeItem) {
         // TODO Make comp argument as the selector for AECOmpQuery
 
-        super((selector:JQuerySelector, comp:JQueryCompSelector = compItem) => {
+        super((selector:JQueryLayerSelector, comp:JQueryCompSelector = compItem) => {
             var compQuery = new AECompQuery(),
                 self = this,
                 comps = compQuery.query(comp)
@@ -246,6 +246,10 @@ class AEQuery extends JQuery<Layer> {
         return this.first().nullLayer;
     }
 
+    public name(value?:string) {
+        return this._val<string>('name', value);
+    }
+
     public quality(value?:LayerQuality) {
         return this._val<LayerQuality>('quality', value);
     }
@@ -268,6 +272,32 @@ class AEQuery extends JQuery<Layer> {
 
     public trackMatteType(value?:TrackMatteType) {
         return this._val<TrackMatteType>('trackMatteType', value);
+    }
+
+    public moveAfter(layer:JQueryLayerSelector) {
+        var q = new AEQuery();
+        this.first().moveAfter(q.query(layer).first());
+        return this;
+    }
+
+    public moveBefore(layer:JQueryLayerSelector) {
+        var q = new AEQuery();
+        this.first().moveBefore(q.query(layer).first());
+        return this;
+    }
+
+    public moveToBeginning() {
+        this.first().moveToBeginning();
+        return this;
+    }
+
+    public moveToEnd() {
+        this.first().moveToEnd();
+        return this;
+    }
+
+    public openInViewer() {
+        throw "Under construction";
     }
 
     public toString():string {

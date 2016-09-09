@@ -3,4 +3,4 @@ var ae = new AEQuery(),
     prop = a.prop('Transform / Position')
     ;
 
-alert(a.trackMatteType().toString());
+a.moveAfter(3);
