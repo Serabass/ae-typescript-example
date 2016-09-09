@@ -1,6 +1,6 @@
 var ae = new AEQuery(),
-    a:AEQuery = <AEQuery>ae.query(":nth(2>..<5)"),
+    a:AEQuery = <AEQuery>ae.query(1),
     prop = a.prop('Transform / Position')
     ;
 
-alert(a.length);
+alert(a.trackMatteType().toString());

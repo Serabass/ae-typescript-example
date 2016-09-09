@@ -207,8 +207,31 @@ class AEQuery extends JQuery<Layer> {
         return this;
     }
 
-    public startTime(value?:number) {
-        return this._val<number>('startTime', value);
+    public inPoint(value?:number) {
+        return this._val<number>('inPoint', value);
+    }
+
+    public outPoint(value?:number) {
+        return this._val<number>('outPoint', value);
+    }
+
+    public duration(value?:number) {
+        if (value !== void 0) {
+            let v = <number>this.inPoint() + value;
+            return this._val<number>('outPoint', v);
+        }
+
+        return <number>this._val<number>('outPoint')
+            - <number>this._val<number>('startTime')
+            ;
+    }
+
+    public threeD(value?:number) {
+        return this._val<number>('threeDLayer', value);
+    }
+
+    public threeDPerChar(value?:number) {
+        return this._val<number>('threeDPerChar', value);
     }
 
     public active(value?:boolean) {
@@ -221,10 +244,6 @@ class AEQuery extends JQuery<Layer> {
 
     public 'null'(value?:boolean) {
         return this.first().nullLayer;
-    }
-
-    public startTime(value?:number) {
-        return this._val<number>('startTime', value);
     }
 
     public quality(value?:LayerQuality) {
@@ -245,6 +264,10 @@ class AEQuery extends JQuery<Layer> {
 
     public selected(value?:boolean) {
         return this._val<boolean>('selected', value);
+    }
+
+    public trackMatteType(value?:TrackMatteType) {
+        return this._val<TrackMatteType>('trackMatteType', value);
     }
 
     public toString():string {
