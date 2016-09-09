@@ -51,20 +51,26 @@ class AEQuery extends JQuery<Layer> {
             return result;
         },
 
-        // TODO Test it!
         within: (layer:any, time1:Time, time2?:Time) => {
             if (time2 === void 0)
                 return layer.startTime === time1.value;
 
-            return layer.startTime >= time1.value && layer.startTime <= time2.value
+            return layer.inPoint >= time1.value && layer.inPoint <= time2.value
                 && layer.outPoint >= time1.value && layer.outPoint <= time2.value;
         },
 
-        startsAt: (layer:any, time1:Time, time2?:Time) => {
+        starts: (layer:any, time1:Time, time2?:Time) => {
             if (time2 === void 0)
-                return layer.startTime === time1.value;
+                return layer.inPoint === time1.value;
 
-            return layer.startTime >= time1.value && layer.startTime <= time2.value;
+            return layer.inPoint >= time1.value && layer.inPoint <= time2.value;
+        },
+
+        ends: (layer:any, time1:Time, time2?:Time) => {
+            if (time2 === void 0)
+                return layer.outPoint === time1.value;
+
+            return layer.outPoint >= time1.value && layer.outPoint <= time2.value;
         }
     };
 
@@ -117,14 +123,20 @@ class AEQuery extends JQuery<Layer> {
         throw 12313123123123;
     }
 
-    constructor(compItem:CompItem = <CompItem>app.project.activeItem) {
+    constructor(compItem?:CompItem) {
         // TODO Make comp argument as the selector for AECOmpQuery
 
-        super((selector:JQueryLayerSelector, comp:JQueryCompSelector = compItem) => {
+        super((selector:JQueryLayerSelector, comp:JQueryCompSelector = compItem || <CompItem>app.project.activeItem) => {
             var compQuery = new AECompQuery(),
                 self = this,
                 comps = compQuery.query(comp)
                 ;
+
+            for (let i = 0; i < this.length; i++) {
+                delete this[i];
+            }
+
+            this.length = 0;
 
             comps.each((i, comp) => {
                 var layers = comp.layers;
@@ -301,6 +313,6 @@ class AEQuery extends JQuery<Layer> {
     }
 
     public toString():string {
-        return `AEQuery [${this.length} layers]`;
+        return `AEQuery [${this.length} layer${this.length === 1 ? '' : 's'}]`;
     }
 }

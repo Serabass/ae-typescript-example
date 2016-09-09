@@ -14,6 +14,7 @@
     "AEQRange.ts",
     "AEQuery.ts",
     "AECompQuery.ts",
+    "global.ts",
     "ScriptExample.ts"
   ]
 }

@@ -1,6 +1,6 @@
 var ae = new AEQuery(),
-    a:AEQuery = <AEQuery>ae.query(1),
+    a:AEQuery = <AEQuery>ae.query(':within(00:19; 00:23)'),
     prop = a.prop('Transform / Position')
     ;
 
-a.moveAfter(3);
+alert(a.select().length);
