@@ -8,6 +8,7 @@ class AECompQuery extends JQuery<any> {
         hasVideo: (item:any) => item.hasVideo,
         hasAudio: (item:any) => item.hasAudio,
         selected: (item:any) => item.selected,
+        active: (item:any) => item === app.project.activeItem,
         useProxy: (item:any) => item.useProxy,
         missing: (item:any) => item.footageMissing,
     };
@@ -15,7 +16,7 @@ class AECompQuery extends JQuery<any> {
     private compare(item:any, selector:any) {
 
         if (selector === '*' || selector === void 0)
-            return true;
+            return item instanceof CompItem;
 
         switch (typeof selector) {
             case 'string':
@@ -43,6 +44,9 @@ class AECompQuery extends JQuery<any> {
             case 'object':
                 if (selector instanceof Array)
                     throw "Under construction";
+
+                if (selector instanceof CompItem)
+                    return item === selector;
 
                 throw "Under construction";
             default:
@@ -77,5 +81,9 @@ class AECompQuery extends JQuery<any> {
         return this.each((i, el) => {
             el.remove();
         });
+    }
+
+    public toString():string {
+        return `AECompQuery [${this.length} layers]`;
     }
 }

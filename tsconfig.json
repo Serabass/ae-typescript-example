@@ -9,6 +9,9 @@
     "typings/aftereffects.d.ts/ae.d.ts",
     "JQuery.ts",
     "JQExprParser.ts",
+    "Time.ts",
+    "PropQuery.ts",
+    "AEQRange.ts",
     "AEQuery.ts",
     "AECompQuery.ts",
     "ScriptExample.ts"

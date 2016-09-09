@@ -12,115 +12,6 @@
  *  -
  */
 
-class Time {
-
-    public value:number;
-
-    public minutes:number;
-    public seconds:number;
-
-    public static from(time:AETime):Time {
-        return new this(time);
-    }
-
-    constructor(time:AETime) {
-        switch (typeof time) {
-            case 'string':
-                let match;
-                let rgx = /^(\d+):(\d+)$/;
-                if (rgx.test(<string>time)) {
-                    var m, s;
-                    [match, m, s] = (<string>time).match(rgx);
-                    this.minutes = m;
-                    this.seconds = s;
-                } else {
-                    throw "Under construction";
-                }
-                break;
-
-            case 'number':
-                this.minutes = Math.floor(time / 60);
-                this.seconds = time % 60;
-                break;
-
-            case 'object':
-                this.minutes = (<any>time).minutes;
-                this.seconds = (<any>time).seconds;
-                break;
-        }
-    }
-
-    // TODO Complete all getters and setters
-    public get ____minutes() {
-        throw "Under construction";
-        //return Math.floor(this.value / 60);
-    }
-
-    // TODO Complete all getters and setters
-    public get ___seconds() {
-        throw "Under construction";
-        //return Math.floor(this.value / 60);
-    }
-}
-
-class AEQRange {
-    constructor(public start:number,
-                public includeStart:boolean,
-                public includeEnd:boolean,
-                public end:number) {
-    }
-}
-
-class PropQuery extends UndoGroup {
-    // TODO Add a generics
-    constructor(public prop:Property) {
-        super();
-    }
-
-    public animate(options:PropAnimateOptions) {
-        options.stepValue = options.stepValue || 1;
-
-        for (var time = options.startTime; time <= options.endTime; time += options.stepValue) {
-            let value = this.prop.valueAtTime(time, true);
-            this.prop.setValueAtTime(time, options.stepFn(value, time))
-        }
-
-        return this;
-    }
-
-    public value(value?:any):any | PropQuery {
-        if (value === void 0)
-            return this.prop.value;
-
-        this.prop.setValue(value);
-        return this;
-    }
-
-    public atTime(time:AETime, value?:PropertyValue):any | PropQuery {
-        var aeTime = Time.from(time);
-
-        if (value !== void 0) {
-            this.prop.setValueAtTime(aeTime.value, value);
-            return this;
-        }
-
-        throw "Under construction";
-        // this.prop.valueAtTime(aeTime.value, false /* ? */);
-    }
-
-    public atKey(keyIndex:number, value?:PropertyValue) {
-
-        if (value !== void 0) {
-            this.prop.setValueAtKey(keyIndex, value);
-            return this;
-        }
-
-        throw "Under construction";
-        // Why undefined?
-        // this.prop.valueAtKey(keyIndex);
-    }
-}
-
 class AEQuery extends JQuery<Layer> {
 
     public expr:JQueryExpr = {
@@ -211,14 +102,23 @@ class AEQuery extends JQuery<Layer> {
     }
 
     constructor(compItem:CompItem = <CompItem>app.project.activeItem) {
-        super((selector:JQuerySelector, comp:CompItem = compItem) => {
-            var layers = comp.layers;
-            for (let i = 1; i <= layers.length; i++) {
-                let layer:Layer = layers[i];
-                if (this.compare(layer, selector)) {
-                    this.push(layer);
+        // TODO Make comp argument as the selector for AECOmpQuery
+
+        super((selector:JQuerySelector, comp:JQueryCompSelector = compItem) => {
+            var compQuery = new AECompQuery(),
+                self = this,
+                comps = compQuery.query(comp)
+                ;
+
+            comps.each((i, comp) => {
+                var layers = comp.layers;
+                for (let i = 1; i <= layers.length; i++) {
+                    let layer:Layer = layers[i];
+                    if (self.compare(layer, selector)) {
+                        self.push(layer);
+                    }
                 }
-            }
+            });
 
             return this;
         });
@@ -281,5 +181,9 @@ class AEQuery extends JQuery<Layer> {
 
         var ae:AEQuery = new AEQuery();
         return this.each((i, el) => el.setParentWithJump(ae.query(parent).first()));
+    }
+
+    public toString():string {
+        return `AEQuery [${this.length} layers]`;
     }
 }

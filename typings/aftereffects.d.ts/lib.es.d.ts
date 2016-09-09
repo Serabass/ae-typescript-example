@@ -81,6 +81,19 @@ declare function encodeURIComponent(uriComponent:string):string;
 
 
 interface Object {
+
+    /** Multiply operator */
+    '*'(val:any):any;
+
+    /** Add operator */
+    '+'(val:any):any;
+
+    /** Subtract operator */
+    '-'(val:any):any;
+
+    /** Division operator */
+    '/'(val:any):any;
+
     /** The initial value of Object.prototype.constructor is the standard built-in Object constructor. */
     constructor: Function;
 

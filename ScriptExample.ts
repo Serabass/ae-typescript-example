@@ -1,5 +1,6 @@
 var ae = new AECompQuery(),
-    a:AECompQuery = <AECompQuery>ae.query(/3/)
+    a:AECompQuery = <AECompQuery>ae.query(':active')
     ;
 
-alert(a.length);
+var t = Time.from([12, 34, 55]);
+alert(t);

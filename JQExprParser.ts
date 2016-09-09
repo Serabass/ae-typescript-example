@@ -1,4 +1,9 @@
 class JQExprParser {
+
+    static parseLexeme(lexeme:string) {
+        throw "Under construction";
+    }
+
     static parse(expr:JQueryExpr, name:string) {
         var [match, negateSign, fnName, args] = name.match(/^(!)?(\w+)(?:\(([^)]+)\))?/);
         var negate = negateSign === '!';
