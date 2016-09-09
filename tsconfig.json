@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "outFile": "ScriptExample.jsx",
+    "outFile": "script.jsx",
     "experimentalDecorators": true,
     "sourceMap": true
   },
