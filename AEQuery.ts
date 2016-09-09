@@ -172,9 +172,9 @@ class AEQuery extends JQuery<Layer> {
     /**
      * path === 'Transform / Position'
      * @param path
-     * @param strict
+     * @param silent
      */
-    public prop(path:string, strict:boolean = false):PropQuery {
+    public prop(path:string, silent:boolean = false):PropQuery {
         var prop:any = this.first();
         var pathElements = path.split(/\s*\/\s*/);
 
@@ -183,7 +183,19 @@ class AEQuery extends JQuery<Layer> {
 
         while (pathElements.length > 0) {
             let pathElement = pathElements.shift();
-            prop = prop.property(pathElement);
+
+            if (/^\d+$/.test(pathElement)) {
+                prop = prop.property(parseInt(pathElement));
+            } else {
+                prop = prop.property(pathElement);
+            }
+
+            if ( ! prop) {
+                if (silent)
+                    return null;
+
+                throw "Unknown Property:" + path;
+            }
         }
 
         return new PropQuery(prop);

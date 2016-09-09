@@ -1,7 +1,7 @@
 
 class UndoGroup {
-    public undoGroup(fn:Function) {
-        app.beginUndoGroup('AEQuery Undo Group');
+    public undoGroup(fn:Function, name:string) {
+        app.beginUndoGroup(name || 'AEQuery Undo Group');
         fn.call(this, this);
         app.endUndoGroup();
         return this;
