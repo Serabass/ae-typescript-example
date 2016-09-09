@@ -52,7 +52,7 @@ class AEQuery extends JQuery<Layer> {
         },
 
         // TODO Test it!
-        belongs: (layer:any, time1:Time, time2?:Time) => {
+        within: (layer:any, time1:Time, time2?:Time) => {
             if (time2 === void 0)
                 return layer.startTime === time1.value;
 
