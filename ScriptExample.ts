@@ -1,6 +1,5 @@
-var ae = new AEQuery(),
-    a:AEQuery = <AEQuery>ae.query(1),
-    aa = a.prop('Text / sourceText')
+var ae = new AECompQuery(),
+    a:AECompQuery = <AECompQuery>ae.query("Comp 3")
     ;
 
-alert(aa);
+alert(a.bgColor('#FF5511'));

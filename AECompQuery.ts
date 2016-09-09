@@ -69,6 +69,23 @@ class AECompQuery extends JQuery<any> {
         });
     }
 
+    public each(fn:IteratorFn):AECompQuery {
+        return <AECompQuery>super.each(fn);
+    }
+
+    private _val<T>(key:string, value?:T):T|AECompQuery {
+        if (value === void 0)
+            return this.first()[key];
+
+        return this.each((i, el) => {
+            el[key] = value;
+        });
+    }
+
+    public bgColor(color?:ColorValue) {
+        return this._val('bgColor', color ? RGB.from(color).normalize() : void 0);
+    }
+
     public duplicate():AECompQuery {
         var ae:AECompQuery = new AECompQuery();
 
@@ -77,10 +94,27 @@ class AECompQuery extends JQuery<any> {
         return ae;
     }
 
+    public renderFrame1() {
+        throw "Under construction";
+        return this.each((i, el) => {
+            el.renderFrame();
+        });
+    }
+
     public remove() {
         return this.each((i, el) => {
             el.remove();
         });
+    }
+
+    public setProxy() {
+        return this.each((i, el) => {
+            el.setProxy();
+        });
+    }
+
+    public comment() {
+        return this._val<string>('comment');
     }
 
     public toString():string {

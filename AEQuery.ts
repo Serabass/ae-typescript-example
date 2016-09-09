@@ -246,8 +246,9 @@ class AEQuery extends JQuery<Layer> {
         if (value === void 0)
             return this.first()[key];
 
-        this.first()[key] = value;
-        return this;
+        return this.each((i, el) => {
+            el[key] = value;
+        });
     }
 
     public inPoint(value?:number) {
