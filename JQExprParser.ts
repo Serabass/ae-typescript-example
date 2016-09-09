@@ -1,6 +1,7 @@
 class JQExprParser {
 
     public static numberRegExp:RegExp = /^\d+(?:\.\d+)?$/;
+    public static stringRegExp:RegExp = /^(['"])(.*?)\1$/;
 
     public static parseLexeme(lexeme:string) {
         throw "Under construction";
@@ -18,7 +19,7 @@ class JQExprParser {
                 .split(/\s*;\s*/)
                 .map(arg => {
 
-                    if ( ! arg)
+                    if (!arg)
                         return void 0;
 
                     if (AEQRange.regExp.test(arg))
@@ -30,7 +31,16 @@ class JQExprParser {
                     if (JQExprParser.numberRegExp.test(arg))
                         return parseFloat(arg);
 
-                    throw "Under construction";
+                    if (JQExprParser.stringRegExp.test(arg)) {
+                        var [match, quote, string] = arg.match(JQExprParser.stringRegExp);
+                        return string;
+                    }
+
+                    try {
+                        return eval(arg);
+                    } catch (e) {
+                        throw e;
+                    }
                 });
         }
 

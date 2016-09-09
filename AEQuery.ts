@@ -42,6 +42,7 @@ class AEQuery extends JQuery<Layer> {
         'null': (layer:any) => layer.nullLayer,
         timeRemapEnabled: (layer:any) => (<AVLayer>layer).timeRemapEnabled,
         trackMatte: (layer:any) => (<AVLayer>layer).isTrackMatte,
+        hasParent: (layer:any) => (<AVLayer>layer).parent !== null,
 
         nth: (layer:any, range:AEQRange) => range.contains(layer.index),
 
@@ -65,6 +66,10 @@ class AEQuery extends JQuery<Layer> {
                 return layer.outPoint === time1.value;
 
             return layer.outPoint >= time1.value && layer.outPoint <= time2.value;
+        },
+
+        spreadTest: (layer:any, ...args:any[]) => {
+            alert(args[0] === null);
         }
     };
 
@@ -117,33 +122,36 @@ class AEQuery extends JQuery<Layer> {
         throw 12313123123123;
     }
 
-    constructor(compItem?:CompItem) {
-        // TODO Make comp argument as the selector for AECOmpQuery
+    constructor(public context?:JQueryContext) {
+        super(<(...args) => JQuery<Layer>>context);
 
-        super((selector:JQueryLayerSelector, comp:JQueryCompSelector = compItem || <CompItem>app.project.activeItem) => {
-            var compQuery = new AECompQuery(),
-                self = this,
-                comps = compQuery.query(comp)
-                ;
+        if (typeof context !== 'function') {
+            super((selector:JQueryLayerSelector, comp:JQueryCompSelector = context || <CompItem>app.project.activeItem) => {
+                var compQuery = new AECompQuery(),
+                    self = this,
+                    comps = compQuery.query(comp)
+                    ;
 
-            for (let i = 0; i < this.length; i++) {
-                delete this[i];
-            }
-
-            this.length = 0;
-
-            comps.each((i, comp) => {
-                var layers = comp.layers;
-                for (let i = 1; i <= layers.length; i++) {
-                    let layer:Layer = layers[i];
-                    if (self.compare(layer, selector)) {
-                        self.push(layer);
-                    }
+                for (let i = 0; i < this.length; i++) {
+                    delete this[i];
                 }
-            });
 
-            return this;
-        });
+                this.length = 0;
+
+                comps.each((i, comp) => {
+                    var layers = comp.layers;
+                    for (let i = 1; i <= layers.length; i++) {
+                        let layer:Layer = layers[i];
+                        if (self.compare(layer, selector)) {
+                            self.push(layer);
+                        }
+                    }
+                });
+
+                return this;
+            });
+        }
+
     }
 
     public '+'(object:AEQuery):AEQuery {
@@ -203,6 +211,10 @@ class AEQuery extends JQuery<Layer> {
 
         var ae:AEQuery = new AEQuery();
         return this.each((i, el) => el.setParentWithJump(ae.query(parent).first()));
+    }
+
+    public filter(selector:JQueryLayerSelector):AEQuery {
+        return (new Array<Layer>()).filter.call(this, (layer:Layer) => this.compare(layer, selector));
     }
 
     private _val<T>(key:string, value?:T):T|AEQuery {
