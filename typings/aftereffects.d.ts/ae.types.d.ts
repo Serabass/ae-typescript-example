@@ -754,6 +754,8 @@ declare class Layer {
     /** Moves the layer to the bottom of the composition (makes it the last layer). */
     moveToEnd():void;
 
+    moveTo(index:number):void;
+
     /** Moves the layer below another layer. */
     moveAfter(layer:Layer):void;
 

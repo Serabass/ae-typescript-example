@@ -165,6 +165,10 @@ class AEQuery extends JQuery<Layer> {
         return ae;
     }
 
+    public each(fn:IteratorFn):AEQuery {
+        return <AEQuery>super.each(fn);
+    }
+
     /**
      * path === 'Transform / Position'
      * @param path
@@ -315,6 +319,12 @@ class AEQuery extends JQuery<Layer> {
 
     public moveToBeginning() {
         this.first().moveToBeginning();
+        return this;
+    }
+
+    /// TODO WHY???????
+    public moveTo(index:number) {
+        this.first().moveTo(index);
         return this;
     }
 

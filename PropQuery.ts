@@ -82,6 +82,11 @@ class PropQuery extends UndoGroup {
         return this;
     }
 
+    public call(fn:(prop:Property, q:PropQuery) => void):PropQuery {
+        fn(this.prop, this);
+        return this;
+    }
+
     public numKeys() {
         return this.prop.numKeys;
     }
@@ -161,5 +166,13 @@ class PropQuery extends UndoGroup {
 
     public type():PropertyType {
         return this.prop.propertyType;
+    }
+
+    public expr(value?:string):string | PropQuery {
+        return this._val<string>('expression', value);
+    }
+
+    public exprEnabled(value?:boolean):boolean | PropQuery {
+        return this._val<boolean>('expressionEnabled', value);
     }
 }
