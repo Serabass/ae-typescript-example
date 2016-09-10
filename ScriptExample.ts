@@ -1,5 +1,5 @@
-var ae = new AECompQuery(),
-    a:AECompQuery = <AECompQuery>ae.query("Comp 3")
-    ;
+var ae = new AEQuery(),
+    q = <AEQuery>ae.query(':nth(1>..>5)')
+;
 
-alert(a.bgColor('#FF5511'));
+q.select();

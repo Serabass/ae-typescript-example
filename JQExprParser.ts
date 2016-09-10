@@ -14,6 +14,9 @@ class JQExprParser {
         var result;
         var argsData;
 
+        if (fn === void 0)
+            throw `Expr function named ${fnName} not found!`;
+
         if (args) {
             argsData = args
                 .split(/\s*;\s*/)
@@ -36,11 +39,12 @@ class JQExprParser {
                         return string;
                     }
 
-                    try {
+                    return eval(arg);
+                    /*try {
                         return eval(arg);
                     } catch (e) {
                         throw e;
-                    }
+                    }*/
                 });
         }
 

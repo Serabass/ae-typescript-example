@@ -1071,6 +1071,9 @@ declare class Project {
 
     /** Automatically replaces text in all expressions. */
     autoFixExpressions(oldText:string, newText:string):void;
+
+    /** Create a comp */
+    createComp():CompItem;
 }
 
 declare type PropertyValue = void | boolean | number | [number, number] | [number, number, number] | [number, number, number, number] | MarkerValue | Shape | TextDocument;

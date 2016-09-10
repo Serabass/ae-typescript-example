@@ -1,3 +1,12 @@
+declare type CreateCompOptions = {
+    name:string,
+    width:number,
+    height:number,
+    pixelAspect:number,
+    duration:number,
+    frameRate:number
+};
+
 class AECompQuery extends JQuery<any> {
 
     public expr:JQueryExpr = {
@@ -12,6 +21,17 @@ class AECompQuery extends JQuery<any> {
         useProxy: (item:any) => item.useProxy,
         footageMissing: (item:any) => item.footageMissing,
     };
+
+    public static create(options:CreateCompOptions):AECompQuery {
+
+        // TODO Make last 3 options not required (with default values)
+
+        var comp = app.project.items
+                .addComp(options.name, options.width, options.height, options.pixelAspect, options.duration, options.frameRate),
+            _ = new AECompQuery().query;
+
+        return <AECompQuery>_(comp);
+    }
 
     private compare(item:any, selector:any) {
 
@@ -56,10 +76,14 @@ class AECompQuery extends JQuery<any> {
 
     constructor(containingProject:Project = app.project) {
         super((selector:any, project:Project = containingProject) => {
-            var items = project.items;
 
-            for (let i = 1; i <= items.length; i++) {
-                let item:any = items[i];
+            if (selector instanceof CompItem) {
+                this.push(selector);
+                return this;
+            }
+
+            for (let i = 1; i <= project.numItems; i++) {
+                let item:any = project.items[i];
                 if (this.compare(item, selector)) {
                     this.push(item);
                 }
@@ -96,9 +120,9 @@ class AECompQuery extends JQuery<any> {
 
     public renderFrame1() {
         throw "Under construction";
-        return this.each((i, el) => {
-            el.renderFrame();
-        });
+        /*return this.each((i, el) => {
+         el.renderFrame();
+         });*/
     }
 
     public remove() {
@@ -115,6 +139,10 @@ class AECompQuery extends JQuery<any> {
 
     public comment() {
         return this._val<string>('comment');
+    }
+
+    public precompose() {
+        throw "Under construction";
     }
 
     public toString():string {
