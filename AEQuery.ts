@@ -14,6 +14,8 @@
 
 class AEQuery extends JQuery<Layer> {
 
+    public query:(selector:JQueryLayerSelector, comp?:JQueryCompSelector) => AEQuery;
+
     public expr:JQueryExpr = {
 
         text: layer => layer instanceof TextLayer,
@@ -67,7 +69,11 @@ class AEQuery extends JQuery<Layer> {
                 return layer.outPoint === time1.value;
 
             return layer.outPoint >= time1.value && layer.outPoint <= time2.value;
-        }
+        },
+
+        light: (layer) => layer instanceof LightLayer,
+        shape: (layer) => layer instanceof ShapeLayer,
+        camera: (layer) => layer instanceof CameraLayer,
     };
 
     private compare(layer, selector:JQueryLayerSelector) {
@@ -129,12 +135,6 @@ class AEQuery extends JQuery<Layer> {
                     comps = compQuery.query(comp)
                     ;
 
-                for (let i = 0; i < this.length; i++) {
-                    delete this[i];
-                }
-
-                this.length = 0;
-
                 comps.each((i, comp) => {
                     var layers = comp.layers;
                     for (let i = 1; i <= layers.length; i++) {
@@ -148,7 +148,6 @@ class AEQuery extends JQuery<Layer> {
                 return this;
             });
         }
-
     }
 
     public '+'(object:AEQuery):AEQuery {
@@ -200,7 +199,7 @@ class AEQuery extends JQuery<Layer> {
                 prop = prop.property(pathElement);
             }
 
-            if ( ! prop) {
+            if (!prop) {
                 if (silent)
                     return null;
 

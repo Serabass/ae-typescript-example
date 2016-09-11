@@ -1,6 +1,5 @@
-var ae:AEQuery = new AEQuery(),
-    x:AEQuery = <AEQuery>ae.query('123 3')
-    ;
+var x:AEQuery = $j(':text+3d');
+var y:AEQuery = $j(':text+3d');
 
-
-alert(x.prop('Effects / Tritone / Highlights'));
+alert(x);
+alert(y);

@@ -7,16 +7,17 @@
   },
   "files": [
     "typings/aftereffects.d.ts/ae.d.ts",
-    "fn.ts",
-    "JQuery.ts",
-    "JQExprParser.ts",
-    "Time.ts",
-    "RGB.ts",
-    "PropQuery.ts",
-    "AEQRange.ts",
-    "AEQuery.ts",
-    "AECompQuery.ts",
-    "global.ts",
-    "main.ts"
+    "fn",
+    "JQuery",
+    "JQExprParser",
+    "Time",
+    "RGB",
+    "PropQuery",
+    "AEQRange",
+    "AEQuery",
+    "plugins/test",
+    "AECompQuery",
+    "global",
+    "main"
   ]
 }
