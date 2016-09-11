@@ -16,6 +16,6 @@
     "AEQuery.ts",
     "AECompQuery.ts",
     "global.ts",
-    "ScriptExample.ts"
+    "main.ts"
   ]
 }
