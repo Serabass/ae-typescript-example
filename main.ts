@@ -1,4 +1,3 @@
-var time:Time = new Time(100);
+var ae:AEQuery = new AEQuery();
+var x:AEQuery = <AEQuery>ae.query('*');
 
-time.setValue(10);
-alert(time.toString());
