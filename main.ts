@@ -1,3 +1,4 @@
-var ae:AEQuery = new AEQuery();
-var x:AEQuery = <AEQuery>ae.query('*');
+var ae:AECompQuery = new AECompQuery();
+var x:AECompQuery = <AECompQuery>ae.query('Comp 3');
 
+x.bgColor(RGB.from('#FFF'));

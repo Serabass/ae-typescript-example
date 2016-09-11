@@ -93,7 +93,7 @@ class AECompQuery extends JQuery<any> {
         });
     }
 
-    public each(fn:IteratorFn):AECompQuery {
+    public each(fn:IIterator<CompItem>):AECompQuery {
         return <AECompQuery>super.each(fn);
     }
 
@@ -101,9 +101,7 @@ class AECompQuery extends JQuery<any> {
         if (value === void 0)
             return this.first()[key];
 
-        return this.each((i, el) => {
-            el[key] = value;
-        });
+        return this.each((i, el) => el[key] = value);
     }
 
     public bgColor(color?:ColorValue) {
@@ -113,7 +111,9 @@ class AECompQuery extends JQuery<any> {
     public duplicate():AECompQuery {
         var ae:AECompQuery = new AECompQuery();
 
-        this.each((i, el:any) => ae.push(el.duplicate()));
+        this.each((i:number, el:CompItem) => {
+            ae.push(el.duplicate())
+        });
 
         return ae;
     }
@@ -126,14 +126,14 @@ class AECompQuery extends JQuery<any> {
     }
 
     public remove() {
-        return this.each((i, el) => {
+        return this.each((i:number, el:CompItem) => {
             el.remove();
         });
     }
 
-    public setProxy() {
-        return this.each((i, el) => {
-            el.setProxy();
+    public setProxy(file:File) {
+        return this.each((i, el:CompItem) => {
+            el.setProxy(file);
         });
     }
 

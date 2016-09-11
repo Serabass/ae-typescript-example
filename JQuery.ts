@@ -34,7 +34,7 @@ class JQuery<T> extends UndoGroup {
         return this;
     }
 
-    public each(fn:IteratorFn):JQuery<T> {
+    public each(fn:IIterator<T>):JQuery<T> {
         for (var i = 0; i < this.length; i++) {
             fn.call(this[i], i, this[i]);
         }
@@ -42,7 +42,7 @@ class JQuery<T> extends UndoGroup {
         return this;
     }
 
-    public map(fn:IteratorFn):JQuery<T> {
+    public map(fn:IIterator<T>):JQuery<T> {
         for (var i = 0; i < this.length; i++) {
             this[i] = fn.call(this[i], i, this[i]);
         }

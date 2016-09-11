@@ -8,6 +8,7 @@ class RGB {
     public B:number;
 
     public static hexColorRegExp:RegExp = /^#?([A-F\d]{1,2})([A-F\d]{1,2})([A-F\d]{1,2})$/;
+    public static hexColorRegExpShorthand:RegExp = /^#?([A-F\d])([A-F\d])([A-F\d])$/;
 
     public static from(value:ColorValue) {
         return new RGB(value);
@@ -19,14 +20,28 @@ class RGB {
                 throw "Under Construction";
 
             case 'string':
-                var [match, R, G, B] = (<string>value)
-                        .match(RGB.hexColorRegExp)
-                        .map(_ => parseInt(_, 16))
-                    ;
+                if (RGB.hexColorRegExp.test(<string>value)) {
+                    let [match, R, G, B] = (<string>value)
+                            .match(RGB.hexColorRegExp)
+                            .map(_ => parseInt(_, 16))
+                        ;
 
-                this.R = R;
-                this.G = G;
-                this.B = B;
+                    this.R = R;
+                    this.G = G;
+                    this.B = B;
+                }
+
+                if (RGB.hexColorRegExpShorthand.test(<string>value)) {
+                    let [match, R, G, B] = (<string>value)
+                            .match(RGB.hexColorRegExpShorthand)
+                            .map(_ => parseInt(_ + _, 16))
+                        ;
+
+                    this.R = R;
+                    this.G = G;
+                    this.B = B;
+                }
+
                 break;
 
             case 'object':
@@ -57,9 +72,9 @@ class RGB {
 
     public normalize():[number, number, number] {
         return [
-            1 / this.R,
-            1 / this.G,
-            1 / this.B
+            Fn.map(this.R, 0, 255, 0, 1),
+            Fn.map(this.G, 0, 255, 0, 1),
+            Fn.map(this.B, 0, 255, 0, 1)
         ];
     }
 }

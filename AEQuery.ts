@@ -162,7 +162,7 @@ class AEQuery extends JQuery<Layer> {
         return ae;
     }
 
-    public each(fn:IteratorFn):AEQuery {
+    public each(fn:IIterator<Layer>):AEQuery {
         return <AEQuery>super.each(fn);
     }
 
