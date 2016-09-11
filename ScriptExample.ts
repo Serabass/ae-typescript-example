@@ -1,5 +1,4 @@
-var ae = new AEQuery(),
-    q = <AEQuery>ae.query(':nth(1>..>5)')
-;
+var time:Time = new Time(100);
 
-q.select();
+time.value = 10;
+time.toSource();

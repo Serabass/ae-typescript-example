@@ -8,7 +8,7 @@ class Time {
 
     public static regExp:RegExp = /^(\d+):(\d+)(?:.(\d+))?$/;
 
-    public static zeroPad(s:number):string {
+    private static zeroPad(s:number):string {
         if (+s >= 10)
             return s.toString();
 
@@ -36,9 +36,7 @@ class Time {
                 break;
 
             case 'number':
-                this.minutes = Math.floor(time / 60);
-                this.seconds = Math.floor(time % 60);
-                this.milliseconds = Math.round((time - Math.floor(<number>time)) * 1000);
+                this.setValue(<number>time);
                 break;
 
             case 'object':
@@ -59,20 +57,33 @@ class Time {
                 break;
         }
 
+    }
+
+    private _updateValue() {
         this.value = (this.minutes * 60) + this.seconds + (this.milliseconds / 1000);
     }
 
-    // TODO Complete all getters and setters
-    /*    public get ____minutes() {
-     throw "Under construction";
-     //return Math.floor(this.value / 60);
-     }
+    public setValue(value:number) {
+        this.value = value;
+        this.minutes = Math.floor(value / 60);
+        this.seconds = Math.floor(value % 60);
+        this.milliseconds = Math.round((value - Math.floor(value)) * 1000);
+    }
 
-     // TODO Complete all getters and setters
-     public get ___seconds() {
-     throw "Under construction";
-     //return Math.floor(this.value / 60);
-     }*/
+    public setMinutes(value:number) {
+        this.minutes = value;
+        this._updateValue();
+    }
+
+    public setSeconds(value:number) {
+        this.seconds = value;
+        this._updateValue();
+    }
+
+    public setMilliseconds(value:number) {
+        this.milliseconds = value;
+        this._updateValue();
+    }
 
     public toString() {
 

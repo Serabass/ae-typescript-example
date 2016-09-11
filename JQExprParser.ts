@@ -3,8 +3,43 @@ class JQExprParser {
     public static numberRegExp:RegExp = /^\d+(?:\.\d+)?$/;
     public static stringRegExp:RegExp = /^(['"])(.*?)\1$/;
 
+    /**
+     *  Examples:
+     *   :expr1(11:99, 1, "123", :sub(1, 2, 3))
+     *   :expr
+     *   :expr()
+     *
+     */
     public static parseLexeme(lexeme:string) {
         throw "Under construction";
+    }
+
+    public static parseArg(arg:string) {
+
+        if (!arg)
+            return void 0;
+
+        if (AEQRange.regExp.test(arg))
+            return AEQRange.from(arg);
+
+        if (Time.regExp.test(arg))
+            return Time.from(arg);
+
+        if (JQExprParser.numberRegExp.test(arg))
+            return parseFloat(arg);
+
+        if (JQExprParser.stringRegExp.test(arg)) {
+            var match, quote, string;
+            [match, quote, string] = arg.match(JQExprParser.stringRegExp);
+            return string;
+        }
+
+        return eval(arg);
+        /*try {
+         return eval(arg);
+         } catch (e) {
+         throw e;
+         }*/
     }
 
     public static parse(expr:JQueryExpr, name:string) {
@@ -20,32 +55,7 @@ class JQExprParser {
         if (args) {
             argsData = args
                 .split(/\s*;\s*/)
-                .map(arg => {
-
-                    if (!arg)
-                        return void 0;
-
-                    if (AEQRange.regExp.test(arg))
-                        return AEQRange.from(arg);
-
-                    if (Time.regExp.test(arg))
-                        return Time.from(arg);
-
-                    if (JQExprParser.numberRegExp.test(arg))
-                        return parseFloat(arg);
-
-                    if (JQExprParser.stringRegExp.test(arg)) {
-                        var [match, quote, string] = arg.match(JQExprParser.stringRegExp);
-                        return string;
-                    }
-
-                    return eval(arg);
-                    /*try {
-                        return eval(arg);
-                    } catch (e) {
-                        throw e;
-                    }*/
-                });
+                .map(arg => JQExprParser.parseArg(arg));
         }
 
         if (!name)
