@@ -1,5 +1,5 @@
 class Fn {
-    public static map(value, low1, high1, low2, high2) {
-        return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+    public static map(n:number, start1:number, stop1:number, start2:number, stop2:number):number {
+        return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
     }
 }

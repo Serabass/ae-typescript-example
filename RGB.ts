@@ -21,35 +21,26 @@ class RGB {
 
             case 'string':
                 if (RGB.hexColorRegExp.test(<string>value)) {
-                    let [match, R, G, B] = (<string>value)
+                    let match;
+                    [match, this.R, this.G, this.B] = (<string>value)
                             .match(RGB.hexColorRegExp)
                             .map(_ => parseInt(_, 16))
                         ;
-
-                    this.R = R;
-                    this.G = G;
-                    this.B = B;
                 }
 
                 if (RGB.hexColorRegExpShorthand.test(<string>value)) {
-                    let [match, R, G, B] = (<string>value)
+                    let match;
+                    [match, this.R, this.G, this.B] = (<string>value)
                             .match(RGB.hexColorRegExpShorthand)
                             .map(_ => parseInt(_ + _, 16))
                         ;
-
-                    this.R = R;
-                    this.G = G;
-                    this.B = B;
                 }
 
                 break;
 
             case 'object':
                 if (value instanceof Array) {
-                    var [R, G, B] = value.map(_ => 255 * _);
-                    this.R = R;
-                    this.G = G;
-                    this.B = B;
+                    [this.R, this.G, this.B] = value.map(_ => 255 * _);
                     break;
                 }
 
