@@ -2,7 +2,9 @@
 for /f "usebackq tokens=*" %%p in (`node ae`) do (
   for /f "usebackq tokens=*" %%d in (`node cwd`) do (
     for /f "usebackq tokens=*" %%x in (`get-out-file`) do (
-      "%%p\AfterFX.exe" -s "$.evalFile('%%d\\%%x')"
+      echo %%p
+      echo %%d
+      echo %%x
     )
   )
 )
