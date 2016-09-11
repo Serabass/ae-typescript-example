@@ -34,7 +34,11 @@ class JQExprParser {
             return string;
         }
 
-        return eval(arg);
+        if (Nth.regExp.test(arg))
+            return Nth.from(arg);
+
+        throw 1231233;
+        // return eval(arg);
         /*try {
          return eval(arg);
          } catch (e) {

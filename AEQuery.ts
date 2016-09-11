@@ -47,7 +47,15 @@ class AEQuery extends JQuery<Layer> {
         hasParent: layer => (<AVLayer>layer).parent !== null,
 
         // Make 2n too (like CSS) for get, e.g., every 3rd element
-        nth: (layer, range:AEQRange) => range.contains(layer.index),
+        nth: (layer, range:AEQRange | Nth) => {
+            if (range instanceof AEQRange)
+                return (<AEQRange>range).contains(layer.index);
+
+            if (range instanceof Nth)
+                return (<Nth>range).check(layer.index);
+
+            throw "123123123";
+        },
 
         within: (layer, time1:Time, time2?:Time) => {
             if (time2 === void 0)
@@ -85,7 +93,7 @@ class AEQuery extends JQuery<Layer> {
             case 'string':
                 if (selector[0] === ':') {
                     let name = (<string>selector).substr(1);
-                    let names = name.split('+');
+                    let names = name.split('++');
                     let result = names.map(name => JQExprParser.parse.call(layer, this.expr, name));
 
                     for (var i = 0; i < result.length; i++) {
@@ -161,6 +169,11 @@ class AEQuery extends JQuery<Layer> {
         return ae;
     }
 
+    // TODO Check
+    public '-'(object:AEQuery):AEQuery {
+        return this.filter((i:number, el:any) => [].indexOf.call(this, el) >= 0);
+    }
+
     public each(fn:IIterator<Layer>):AEQuery {
         return <AEQuery>super.each(fn);
     }
@@ -222,12 +235,18 @@ class AEQuery extends JQuery<Layer> {
         return this.prop(['Effects'].concat(<string[]>selector), silent);
     }
 
-    public duplicate():AEQuery {
+    public map(fn:IIterator<Layer>):AEQuery {
         var ae:AEQuery = new AEQuery();
 
-        this.each((i, el:any) => ae.push(el.duplicate()));
+        this.each((i, el) => {
+            ae.push(fn.call(this[i], i, this[i]));
+        });
 
         return ae;
+    }
+
+    public duplicate():AEQuery {
+        return this.map((i, el) => el.duplicate());
     }
 
     public select(value:boolean = true):AEQuery {
