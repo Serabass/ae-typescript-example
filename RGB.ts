@@ -1,4 +1,4 @@
-declare type RGBLike = {R:number, G:number, B:number}
+declare type RGBLike = {R:number, G:number, B:number, r:number, g:number, b:number}
 declare type ColorValue = RGB | RGBLike | number | string | [number, number, number];
 
 // TODO Complete it!
@@ -61,10 +61,9 @@ class RGB {
                 }
 
                 if (value instanceof Object) {
-                    // TODO WRONG (use Processing's .map algorithm)
-                    this.R = 1 / (<RGBLike>value).R;
-                    this.G = 1 / (<RGBLike>value).G;
-                    this.B = 1 / (<RGBLike>value).B;
+                    this.R = (<RGBLike>value).R || (<RGBLike>value).r;
+                    this.G = (<RGBLike>value).G || (<RGBLike>value).g;
+                    this.B = (<RGBLike>value).B || (<RGBLike>value).b;
                     break;
                 }
         }
