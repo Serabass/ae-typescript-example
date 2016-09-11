@@ -23,17 +23,17 @@ class RGB {
                 if (RGB.hexColorRegExp.test(<string>value)) {
                     let match;
                     [match, this.R, this.G, this.B] = (<string>value)
-                            .match(RGB.hexColorRegExp)
-                            .map(_ => parseInt(_, 16))
-                        ;
+                        .match(RGB.hexColorRegExp)
+                        .map(_ => parseInt(_, 16))
+                    ;
                 }
 
                 if (RGB.hexColorRegExpShorthand.test(<string>value)) {
                     let match;
                     [match, this.R, this.G, this.B] = (<string>value)
-                            .match(RGB.hexColorRegExpShorthand)
-                            .map(_ => parseInt(_ + _, 16))
-                        ;
+                        .match(RGB.hexColorRegExpShorthand)
+                        .map(_ => parseInt(_ + _, 16))
+                    ;
                 }
 
                 break;

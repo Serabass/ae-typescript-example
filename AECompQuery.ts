@@ -23,14 +23,18 @@ class AECompQuery extends JQuery<any> {
     };
 
     public static create(options:CreateCompOptions):AECompQuery {
-
         // TODO Make last 3 options not required (with default values)
-
         var comp = app.project.items
-                .addComp(options.name, options.width, options.height, options.pixelAspect, options.duration, options.frameRate),
-            _ = new AECompQuery().query;
+                .addComp(
+            options.name,
+            options.width,
+            options.height,
+            options.pixelAspect,
+            options.duration,
+            options.frameRate
+        );
 
-        return <AECompQuery>_(comp);
+        return <AECompQuery>new AECompQuery().query(comp);
     }
 
     private compare(item:any, selector:any) {

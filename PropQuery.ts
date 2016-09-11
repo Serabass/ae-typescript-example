@@ -1,6 +1,6 @@
 class PropQuery extends UndoGroup {
     // TODO Add a generics
-    constructor(public prop:any, public path:string = null) {
+    constructor(public prop:any, public path:string | string[] = null) {
         super();
     }
 

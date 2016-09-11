@@ -50,6 +50,6 @@ class JQuery<T> extends UndoGroup {
         return this;
     }
 
-    public noop() {
+    public noop():void {
     }
 }

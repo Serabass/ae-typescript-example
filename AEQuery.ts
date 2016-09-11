@@ -171,9 +171,22 @@ class AEQuery extends JQuery<Layer> {
      * @param path
      * @param silent
      */
-    public prop(path:string, silent:boolean = false):PropQuery {
+    public prop(path:string | string[], silent:boolean = false):PropQuery {
         var prop:any = this.first();
-        var pathElements = path.split(/\s*\/\s*/);
+        var pathElements;
+
+        switch (typeof path) {
+            case 'string':
+                pathElements = (<string>path).split(/\s*\/\s*/);
+                break;
+
+            case 'object':
+                if (path instanceof Array) {
+                    pathElements = path;
+                }
+                break;
+
+        }
 
         if (!prop)
             return;
@@ -201,6 +214,13 @@ class AEQuery extends JQuery<Layer> {
     public props(selector:string):any {
         var layer:Layer = this.first();
         throw "Under construction";
+    }
+
+    public effect(selector:string | string[], silent:boolean = false):PropQuery {
+        if (typeof selector === 'string')
+            selector = (<string>selector).split(/\s*\/\s*/);
+
+        return this.prop(['Effects'].concat(<string[]>selector), silent);
     }
 
     public duplicate():AEQuery {

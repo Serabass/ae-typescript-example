@@ -1,5 +1,6 @@
-var ae:AECompQuery = new AECompQuery(),
-    x:AECompQuery = <AECompQuery>ae.query('Comp 3')
+var ae:AEQuery = new AEQuery(),
+    x:AEQuery = <AEQuery>ae.query('123 3')
     ;
 
-x.bgColor('#FFF');
+
+alert(x.prop('Effects / Tritone / Highlights'));
