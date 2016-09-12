@@ -1,3 +1,3 @@
-var t = (new AEQuery()).query(':within(00:30, 01:00)');
+var t = (new AEQuery()).query(1);
 
-alert(t.select().length);
+alert(t.inPoint('00:59'));

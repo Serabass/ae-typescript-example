@@ -29,6 +29,7 @@ class AEQRange {
     }
 
     public toString():string {
+        // TODO Wrong! Use < and >
         return this.start
             + (this.includeStart ? '.' : '')
             + '..'

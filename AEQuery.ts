@@ -83,6 +83,14 @@ class AEQuery extends JQuery<Layer> {
         light: (layer) => layer instanceof LightLayer,
         shape: (layer) => layer instanceof ShapeLayer,
         camera: (layer) => layer instanceof CameraLayer,
+
+        before: (layer, selector:JQuerySelector) => {
+            throw "Under construction";
+        },
+
+        after: (layer, selector:JQuerySelector) => {
+            throw "Under construction";
+        }
     };
 
     private compare(layer, selector:JQueryLayerSelector) {
@@ -148,10 +156,17 @@ class AEQuery extends JQuery<Layer> {
                     var layers = comp.layers;
                     for (let i = 1; i <= layers.length; i++) {
                         let layer:Layer = layers[i];
-                        let lexemes = JQExprParser.parseLexemeList(<string>selector, {delimiter: ','});
+                        if (typeof selector === 'string') {
+                            let lexemes = JQExprParser.parseLexemeList(<string>selector, {delimiter: ','});
 
-                        for (let li = 0; li < lexemes.length; li++) {
-                            if (self.compare(layer, lexemes[li])) {
+                            for (let li = 0; li < lexemes.length; li++) {
+                                if (self.compare(layer, lexemes[li])) {
+                                    self.push(layer);
+                                }
+                            }
+                        } else {
+
+                            if (self.compare(layer, selector)) {
                                 self.push(layer);
                             }
                         }
@@ -291,14 +306,29 @@ class AEQuery extends JQuery<Layer> {
         });
     }
 
-    public inPoint(value?:number) {
-        return this._val<number>('inPoint', value);
+    public _val2<T>(key:string, fns:{get:(value:T) => T, set:(value:T) => T}, value?:T) {
+        if (value === void 0)
+            return fns.get(this.first()[key]);
+
+        this.first()[key] = fns.set(value);
+        return this;
+    }
+
+    public inPoint(value?:TimeValue):Time | AEQuery {
+        return this._val2('inPoint', {
+            get: value => Time.from(value),
+            set: value => Time.from(value).value,
+        }, value);
     }
 
     public outPoint(value?:number) {
-        return this._val<number>('outPoint', value);
+        return this._val2('outPoint', {
+            get: value => Time.from(value),
+            set: value => Time.from(value).value,
+        }, value);
     }
 
+    // TODO Make it with Time!
     public duration(value?:number) {
         if (value !== void 0) {
             let v = <number>this.inPoint() + value;
@@ -310,12 +340,12 @@ class AEQuery extends JQuery<Layer> {
             ;
     }
 
-    public threeD(value?:number) {
-        return this._val<number>('threeDLayer', value);
+    public threeD(value?:boolean) {
+        return this._val<boolean>('threeDLayer', value);
     }
 
-    public threeDPerChar(value?:number) {
-        return this._val<number>('threeDPerChar', value);
+    public threeDPerChar(value?:boolean) {
+        return this._val<boolean>('threeDPerChar', value);
     }
 
     public active(value?:boolean) {

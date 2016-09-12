@@ -114,7 +114,8 @@ class JQExprParser {
             throw `Expr function named ${fnName} not found!`;
 
         if (args) {
-            argsData = JQExprParser.parseLexemeList(args, {delimiter: ','})
+            argsData = JQExprParser
+                .parseLexemeList(args, {delimiter: ','})
                 .map(arg => JQExprParser.parseArg(arg))
             ;
         }
