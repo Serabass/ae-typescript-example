@@ -306,38 +306,39 @@ class AEQuery extends JQuery<Layer> {
         });
     }
 
-    public _val2<T>(key:string, fns:{get:(value:T) => T, set:(value:T) => T}, value?:T) {
+    public _valEx<G, S>(key:string, fns:{get:(value:G) => G, set:(value:S) => S}, value?:G|S):G|S|AEQuery {
         if (value === void 0)
             return fns.get(this.first()[key]);
 
-        this.first()[key] = fns.set(value);
+        this.first()[key] = fns.set(<S>value);
         return this;
     }
 
-    public inPoint(value?:TimeValue):Time | AEQuery {
-        return this._val2('inPoint', {
+    public startsAt(value?:TimeValue):Time | AEQuery {
+        // TODO Check
+        return <Time | AEQuery>this._valEx<TimeValue, TimeValue>('inPoint', {
             get: value => Time.from(value),
-            set: value => Time.from(value).value,
-        }, value);
+            set: value => Time.from(value).getValue(),
+        }, <Time>value);
     }
 
-    public outPoint(value?:number) {
-        return this._val2('outPoint', {
+    public endsAt(value?:TimeValue):Time | AEQuery {
+        return <Time | AEQuery>this._valEx<TimeValue, TimeValue>('outPoint', {
             get: value => Time.from(value),
-            set: value => Time.from(value).value,
-        }, value);
+            set: value => Time.from(value).getValue(),
+        }, <Time>value);
     }
 
     // TODO Make it with Time!
-    public duration(value?:number) {
-        if (value !== void 0) {
-            let v = <number>this.inPoint() + value;
-            return this._val<number>('outPoint', v);
-        }
+    public duration(value?:TimeValue):Time | AEQuery {
+        var start:Time = Time.from(this.startsAt());
+        var end:Time = Time.from(this.endsAt());
 
-        return <number>this._val<number>('outPoint')
-            - <number>this._val<number>('startTime')
-            ;
+        if (value === void 0)
+            return Time.from(end.getValue() - start.getValue());
+
+        this.endsAt((<Time>this.startsAt()).getValue() + Time.from(value).getValue());
+        return this;
     }
 
     public threeD(value?:boolean) {
