@@ -1,5 +1,7 @@
 class Time {
 
+    // TODO Are hours needed?
+
     public value:number;
 
     public minutes:number;
@@ -33,6 +35,7 @@ class Time {
                 } else {
                     throw "Under construction";
                 }
+                this._updateValue();
                 break;
 
             case 'number':
@@ -54,9 +57,9 @@ class Time {
                     this.seconds = (<any>time).seconds;
                     this.milliseconds = (<any>time).milliseconds;
                 }
+                this._updateValue();
                 break;
         }
-
     }
 
     private _updateValue() {
@@ -68,6 +71,10 @@ class Time {
         this.minutes = Math.floor(value / 60);
         this.seconds = Math.floor(value % 60);
         this.milliseconds = Math.round((value - Math.floor(value)) * 1000);
+    }
+
+    public getValue() {
+        return (this.minutes * 60) + this.seconds + (this.milliseconds / 1000);
     }
 
     public setMinutes(value:number) {

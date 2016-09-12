@@ -65,13 +65,16 @@ class JQExprParser {
             if (ch === void 0)
                 break;
         }
-        return result;
+
+        return result.map(lexeme => lexeme.replace(/^\s+/, '').replace(/\s+$/, ''));
     }
 
     public static parseArg(arg:string) {
 
         if (!arg)
             return void 0;
+
+        // TODO Add a TimeRange
 
         if (AEQRange.regExp.test(arg))
             return AEQRange.from(arg);
@@ -102,24 +105,24 @@ class JQExprParser {
 
     public static parse(expr:JQueryExpr, name:string) {
         var [match, negateSign, fnName, args] = name.match(/^(!)?(\w+)(?:\(([^)]+)\))?/);
-        var negate = negateSign === '!';
-        var fn:Function = expr[fnName];
-        var result;
-        var argsData;
+        var negate = negateSign === '!',
+            fn:Function = expr[fnName],
+            result,
+            argsData;
 
         if (fn === void 0)
             throw `Expr function named ${fnName} not found!`;
 
         if (args) {
-            argsData = args
-                .split(/\s*;\s*/)
-                .map(arg => JQExprParser.parseArg(arg));
+            argsData = JQExprParser.parseLexemeList(args, {delimiter: ','})
+                .map(arg => JQExprParser.parseArg(arg))
+            ;
         }
 
         if (!name)
             throw `Expr function with name ${name} not found!`;
 
-        result = fn(this, ...argsData);
+        result = fn.call(this, this, ...argsData);
 
         return negate ? !result : result;
     }

@@ -60,7 +60,7 @@ class AEQuery extends JQuery<Layer> {
 
         within: (layer, time1:Time, time2?:Time) => {
             if (time2 === void 0)
-                return layer.startTime === time1.value;
+                return layer.inPoint === time1.value;
 
             return layer.inPoint >= time1.value && layer.inPoint <= time2.value
                 && layer.outPoint >= time1.value && layer.outPoint <= time2.value;
@@ -148,8 +148,12 @@ class AEQuery extends JQuery<Layer> {
                     var layers = comp.layers;
                     for (let i = 1; i <= layers.length; i++) {
                         let layer:Layer = layers[i];
-                        if (self.compare(layer, selector)) {
-                            self.push(layer);
+                        let lexemes = JQExprParser.parseLexemeList(<string>selector, {delimiter: ','});
+
+                        for (let li = 0; li < lexemes.length; li++) {
+                            if (self.compare(layer, lexemes[li])) {
+                                self.push(layer);
+                            }
                         }
                     }
                 });

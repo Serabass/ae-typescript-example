@@ -1,3 +1,3 @@
-var t = (new AEQuery()).query(':!nth(2n+1)+enabled');
+var t = (new AEQuery()).query(':within(00:30, 01:00)');
 
-t.select();
+alert(t.select().length);
