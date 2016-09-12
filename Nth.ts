@@ -16,8 +16,9 @@ class Nth {
             case '+':
                 this.offset = parseInt(offset || "0", 10);
                 break;
+
             case '-':
-                this.offset = -offset;
+                this.offset = -parseInt(offset || "0", 10);
                 break;
 
             case void 0:
@@ -25,7 +26,7 @@ class Nth {
         }
     }
 
-    public check(value:number) {
-        return (value % this.step) - this.offset === 0
-    }
+    // TODO #n-1 doesn't work
+    public check = (value:number) =>
+        (value % this.step) - this.offset === 0;
 }

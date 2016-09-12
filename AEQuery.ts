@@ -27,6 +27,7 @@ class AEQuery extends JQuery<Layer> {
         last: layer => layer.index === layer.containingComp.numLayers,
 
         '3d': layer => (<AVLayer>layer).threeDLayer,
+        threeD: layer => (<AVLayer>layer).threeDLayer,
         shy: layer => layer.shy,
         solo: layer => layer.solo,
         selected: layer => layer.selected,
@@ -93,7 +94,7 @@ class AEQuery extends JQuery<Layer> {
             case 'string':
                 if (selector[0] === ':') {
                     let name = (<string>selector).substr(1);
-                    let names = name.split('++');
+                    let names = JQExprParser.parseLexemeList(name);
                     let result = names.map(name => JQExprParser.parse.call(layer, this.expr, name));
 
                     for (var i = 0; i < result.length; i++) {

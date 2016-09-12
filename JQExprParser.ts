@@ -1,3 +1,11 @@
+declare type JQExprLexemeParserOptions = {
+    delimiter?:string,
+    brackets?: {
+        open?:string,
+        close?:string
+    }
+};
+
 class JQExprParser {
 
     public static numberRegExp:RegExp = /^\d+(?:\.\d+)?$/;
@@ -10,8 +18,54 @@ class JQExprParser {
      *   :expr()
      *
      */
-    public static parseLexeme(lexeme:string) {
-        throw "Under construction";
+    public static parseLexemeList(lexeme:string, options:JQExprLexemeParserOptions = {}) {
+        var result = [],
+            level = 0,
+            chars = lexeme.split('');
+        options.delimiter = options.delimiter || '+';
+        options.brackets = options.brackets || {open: '(', close: ')'};
+        options.brackets.open = options.brackets.open || '(';
+        options.brackets.close = options.brackets.close || ')';
+
+        var currentString = '';
+
+        function x(ch:string) {
+
+            switch (ch) {
+                case options.delimiter:
+                case void 0:
+                    if (level === 0) {
+                        result.push(currentString);
+                        currentString = '';
+                    } else {
+                        currentString += ch;
+                    }
+                    return;
+
+                case options.brackets.open:
+                    level++;
+                    currentString += ch;
+                    return;
+
+                case options.brackets.close:
+                    level--;
+                    currentString += ch;
+                    return;
+
+                default:
+                    currentString += ch;
+            }
+        }
+
+        while (chars.length >= 0) {
+            var ch = chars.shift();
+
+            x(ch);
+
+            if (ch === void 0)
+                break;
+        }
+        return result;
     }
 
     public static parseArg(arg:string) {
