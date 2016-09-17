@@ -47,10 +47,10 @@ class AECompQuery extends JQuery<any> {
                 if (selector[0] === ':') {
                     let name = (<string>selector).substr(1);
                     let names = name.split('+');
-                    let result = names.map(name => JQExprParser.parse.call(item, this.expr, name));
+                    let result = names.map<boolean>(name => <boolean>JQExprParser.parse.call(item, this.expr, name));
 
-                    for (var i = 0; i < result.length; i++) {
-                        if (result[i] !== true)
+                    for (let el of result) {
+                        if (el !== true)
                             return false;
                     }
 

@@ -17,3 +17,8 @@ declare type PropAnimateOptions = {
     stepFn:Function,
     stepValue?:number
 }
+
+interface IAEQuery {
+    test(string:string):string;
+    test():void;
+}

@@ -12,86 +12,9 @@
  *  -
  */
 
-class AEQuery extends JQuery<Layer> {
+class AEQuery extends AEQueryProps /*implements IAEQuery*/ {
 
     public query:(selector:JQueryLayerSelector, comp?:JQueryCompSelector) => AEQuery;
-
-    public expr:JQueryExpr = {
-
-        text: layer => layer instanceof TextLayer,
-        av: layer => layer instanceof AVLayer,
-
-        even: layer => layer.index % 2 === 0,
-        odd: layer => layer.index % 2 !== 0,
-        first: layer => layer.index === 1,
-        last: layer => layer.index === layer.containingComp.numLayers,
-
-        '3d': layer => (<AVLayer>layer).threeDLayer,
-        threeD: layer => (<AVLayer>layer).threeDLayer,
-        shy: layer => layer.shy,
-        solo: layer => layer.solo,
-        selected: layer => layer.selected,
-        locked: layer => layer.locked,
-        enabled: layer => layer.enabled,
-        guide: layer => (<AVLayer>layer).guideLayer,
-
-        motionBlur: layer => (<AVLayer>layer).motionBlur,
-        adjustment: layer => (<AVLayer>layer).adjustmentLayer,
-        audioActive: layer => (<AVLayer>layer).audioActive,
-        audioEnabled: layer => (<AVLayer>layer).audioEnabled,
-        effectsActive: layer => (<AVLayer>layer).effectsActive,
-        hasVideo: layer => layer.hasVideo,
-        hasTrackMatte: layer => (<AVLayer>layer).hasTrackMatte,
-        'null': layer => layer.nullLayer,
-        timeRemapEnabled: layer => (<AVLayer>layer).timeRemapEnabled,
-        trackMatte: layer => (<AVLayer>layer).isTrackMatte,
-        hasParent: layer => (<AVLayer>layer).parent !== null,
-
-        // Make 2n too (like CSS) for get, e.g., every 3rd element
-        nth: (layer, range:AEQRange | Nth) => {
-            if (range instanceof AEQRange)
-                return (<AEQRange>range).contains(layer.index);
-
-            if (range instanceof Nth)
-                return (<Nth>range).check(layer.index);
-
-            throw "123123123";
-        },
-
-        within: (layer, time1:Time, time2?:Time) => {
-            if (time2 === void 0)
-                return layer.inPoint === time1.value;
-
-            return layer.inPoint >= time1.value && layer.inPoint <= time2.value
-                && layer.outPoint >= time1.value && layer.outPoint <= time2.value;
-        },
-
-        starts: (layer, time1:Time, time2?:Time) => {
-            if (time2 === void 0)
-                return layer.inPoint === time1.value;
-
-            return layer.inPoint >= time1.value && layer.inPoint <= time2.value;
-        },
-
-        ends: (layer, time1:Time, time2?:Time) => {
-            if (time2 === void 0)
-                return layer.outPoint === time1.value;
-
-            return layer.outPoint >= time1.value && layer.outPoint <= time2.value;
-        },
-
-        light: (layer) => layer instanceof LightLayer,
-        shape: (layer) => layer instanceof ShapeLayer,
-        camera: (layer) => layer instanceof CameraLayer,
-
-        before: (layer, selector:JQuerySelector) => {
-            throw "Under construction";
-        },
-
-        after: (layer, selector:JQuerySelector) => {
-            throw "Under construction";
-        }
-    };
 
     private compare(layer, selector:JQueryLayerSelector) {
 
@@ -105,8 +28,8 @@ class AEQuery extends JQuery<Layer> {
                     let names = JQExprParser.parseLexemeList(name);
                     let result = names.map(name => JQExprParser.parse.call(layer, this.expr, name));
 
-                    for (var i = 0; i < result.length; i++) {
-                        if (result[i] !== true)
+                    for (let el of result) {
+                        if (el !== true)
                             return false;
                     }
 
@@ -134,7 +57,7 @@ class AEQuery extends JQuery<Layer> {
                     throw "Under construction";
 
                 if (selector.constructor.name.indexOf('Layer') >= 0)
-                    return true;
+                    return selector === layer;
 
                 throw "Under construction";
         }
@@ -142,11 +65,15 @@ class AEQuery extends JQuery<Layer> {
         throw 12313123123123;
     }
 
+    public static query(selector:JQueryLayerSelector, comp:JQueryCompSelector = <CompItem>app.project.activeItem):AEQuery {
+        return new AEQuery().query(selector, comp);
+    }
+
     constructor(public context?:JQueryContext) {
         super(<(...args) => AEQuery>context);
 
         if (typeof context !== 'function') {
-            super((selector:JQueryLayerSelector, comp:JQueryCompSelector = context || <CompItem>app.project.activeItem) => {
+            super((selector:JQueryLayerSelector, comp:JQueryCompSelector = context || <CompItem>app.project.activeItem):AEQuery => {
                 var compQuery = new AECompQuery(),
                     self = this,
                     comps = compQuery.query(comp)
@@ -159,8 +86,14 @@ class AEQuery extends JQuery<Layer> {
                         if (typeof selector === 'string') {
                             let lexemes = JQExprParser.parseLexemeList(<string>selector, {delimiter: ','});
 
-                            for (let li = 0; li < lexemes.length; li++) {
-                                if (self.compare(layer, lexemes[li])) {
+                            for (let lex of lexemes) {
+                                if (self.compare(layer, lex)) {
+                                    self.push(layer);
+                                }
+                            }
+
+                            for (let lex of lexemes) {
+                                if (self.compare(layer, lex)) {
                                     self.push(layer);
                                 }
                             }
@@ -191,7 +124,8 @@ class AEQuery extends JQuery<Layer> {
 
     // TODO Check
     public '-'(object:AEQuery):AEQuery {
-        return this.filter((i:number, el:any) => [].indexOf.call(this, el) >= 0);
+        return this.filter((i:number, el:any) =>
+            [].indexOf.call(this, el) >= 0);
     }
 
     public each(fn:IIterator<Layer>):AEQuery {
@@ -252,7 +186,7 @@ class AEQuery extends JQuery<Layer> {
         if (typeof selector === 'string')
             selector = (<string>selector).split(/\s*\/\s*/);
 
-        return this.prop(['Effects'].concat(<string[]>selector), silent);
+        return this.prop(['Effects', ...selector], silent);
     }
 
     public map(fn:IIterator<Layer>):AEQuery {
@@ -280,8 +214,7 @@ class AEQuery extends JQuery<Layer> {
         if (!parent)
             return this.first().parent;
 
-        var ae:AEQuery = new AEQuery();
-        return this.each((i, el) => el.setParentWithJump(ae.query(parent).first()));
+        return this.each((i, el) => el.setParentWithJump(AEQuery.query(parent).first()));
     }
 
     public filter(selector:JQueryLayerSelector):AEQuery {
@@ -297,107 +230,13 @@ class AEQuery extends JQuery<Layer> {
         }).query(selector);
     }
 
-    private _val<T>(key:string, value?:T):T|AEQuery {
-        if (value === void 0)
-            return this.first()[key];
-
-        return this.each((i, el) => {
-            el[key] = value;
-        });
-    }
-
-    public _valEx<G, S>(key:string, fns:{get:(value:G) => G, set:(value:S) => S}, value?:G|S):G|S|AEQuery {
-        if (value === void 0)
-            return fns.get(this.first()[key]);
-
-        this.first()[key] = fns.set(<S>value);
-        return this;
-    }
-
-    public startsAt(value?:TimeValue):Time | AEQuery {
-        // TODO Check
-        return <Time | AEQuery>this._valEx<TimeValue, TimeValue>('inPoint', {
-            get: value => Time.from(value),
-            set: value => Time.from(value).getValue(),
-        }, <Time>value);
-    }
-
-    public endsAt(value?:TimeValue):Time | AEQuery {
-        return <Time | AEQuery>this._valEx<TimeValue, TimeValue>('outPoint', {
-            get: value => Time.from(value),
-            set: value => Time.from(value).getValue(),
-        }, <Time>value);
-    }
-
-    // TODO Make it with Time!
-    public duration(value?:TimeValue):Time | AEQuery {
-        var start:Time = Time.from(this.startsAt());
-        var end:Time = Time.from(this.endsAt());
-
-        if (value === void 0)
-            return Time.from(end.getValue() - start.getValue());
-
-        this.endsAt((<Time>this.startsAt()).getValue() + Time.from(value).getValue());
-        return this;
-    }
-
-    public threeD(value?:boolean) {
-        return this._val<boolean>('threeDLayer', value);
-    }
-
-    public threeDPerChar(value?:boolean) {
-        return this._val<boolean>('threeDPerChar', value);
-    }
-
-    public active(value?:boolean) {
-        return this._val<boolean>('active', value);
-    }
-
-    public enabled(value?:boolean) {
-        return this._val<boolean>('enabled', value);
-    }
-
-    public 'null'() {
-        return this.first().nullLayer;
-    }
-
-    public name(value?:string) {
-        return this._val<string>('name', value);
-    }
-
-    public quality(value?:LayerQuality) {
-        return this._val<LayerQuality>('quality', value);
-    }
-
-    public samplingQuality(value?:LayerSamplingQuality) {
-        return this._val<LayerSamplingQuality>('quality', value);
-    }
-
-    public shy(value?:boolean) {
-        return this._val<boolean>('shy', value);
-    }
-
-    public solo(value?:boolean) {
-        return this._val<boolean>('solo', value);
-    }
-
-    public selected(value?:boolean) {
-        return this._val<boolean>('selected', value);
-    }
-
-    public trackMatteType(value?:TrackMatteType) {
-        return this._val<TrackMatteType>('trackMatteType', value);
-    }
-
     public moveAfter(layer:JQueryLayerSelector) {
-        var q = new AEQuery();
-        this.first().moveAfter(q.query(layer).first());
+        this.first().moveAfter(AEQuery.query(layer).first());
         return this;
     }
 
     public moveBefore(layer:JQueryLayerSelector) {
-        var q = new AEQuery();
-        this.first().moveBefore(q.query(layer).first());
+        this.first().moveBefore(AEQuery.query(layer).first());
         return this;
     }
 

@@ -19,8 +19,9 @@ class PropQuery extends UndoGroup {
                     if (!(this.prop.value.length !== val.length))
                         return false;
 
-                    for (let i = 0; i < val.length; i++) {
-                        if (val[i] !== this.prop.value[i])
+                    let i:number = 0;
+                    for (let el of val) {
+                        if (el !== this.prop.value[++i])
                             return false;
                     }
 
@@ -134,8 +135,8 @@ class PropQuery extends UndoGroup {
 
     public removeKeys(...args:number[]) {
         return this.call(prop => {
-            for (let i = 0; i < args.length; i++) {
-                prop.removeKey(args[i]);
+            for (let arg of args) {
+                prop.removeKey(arg);
             }
         });
     }

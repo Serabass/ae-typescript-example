@@ -103,15 +103,16 @@ class JQuery<T> extends UndoGroup { [index:number]:T;
     }
 
     public each(fn:IIterator<T>):JQuery<T> {
-        for (var i = 0; i < this.length; i++) {
-            fn.call(this[i], i, this[i]);
+        var i:number = 0;
+        for (let el of <any>this) {
+            fn.call(el, ++i, el);
         }
 
         return this;
     }
 
     public map(fn:IIterator<T>):JQuery<T> {
-        // TODO Wrong! Must be returned a new array
+        // TODO Wrong! Must be returned as a new array
         for (var i = 0; i < this.length; i++) {
             this[i] = fn.call(this[i], i, this[i]);
         }

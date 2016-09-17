@@ -1,1 +1,5 @@
-var t = (new AEQuery()).query(1);
+var t = $j('*');
+
+t.each(function (i) {
+    $j(this).threeD(true);
+});
