@@ -1,6 +1,4 @@
-
-
-class AEQueryProps extends AEQueryExpr {
+interface AEQueryProps {
 
     startsAt():TimeValue;
     startsAt(value:TimeValue):AEQuery;
@@ -40,6 +38,10 @@ class AEQueryProps extends AEQueryExpr {
 
     trackMatteType():TrackMatteType;
     trackMatteType(value:TrackMatteType):AEQuery;
+
+}
+
+class AEQueryProps extends AEQueryExpr {
 
     private declareProp<T>(alias:string, prop:string = alias):AEQueryProps {
         this[alias] = function (value?:T):T|AEQueryProps {

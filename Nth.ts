@@ -27,6 +27,7 @@ class Nth {
     }
 
     // TODO #n-1 doesn't work
-    public check = (value:number) =>
-        (value % this.step) - this.offset === 0;
+    public check(value:number) {
+        return (value % this.step) - this.offset === 0;
+    }
 }

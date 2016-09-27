@@ -21,6 +21,7 @@
     "plugins/test",
     "AECompQuery",
     "global",
+    "FEATURE",
     "main"
   ]
 }

@@ -14,6 +14,7 @@
 
 class AEQuery extends AEQueryProps /*implements IAEQuery*/ {
 
+
     public query:(selector:JQueryLayerSelector, comp?:JQueryCompSelector) => AEQuery;
 
     private compare(layer, selector:JQueryLayerSelector) {
