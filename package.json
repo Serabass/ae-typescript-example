@@ -1,0 +1,25 @@
+{
+  "name": "ae-typescript-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ae-path.js",
+  "dependencies": {
+    "regedit": "^2.2.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "compile.bat",
+    "run": "run.bat"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Serabass/jquery-adobe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Serabass/jquery-adobe/issues"
+  },
+  "homepage": "https://github.com/Serabass/jquery-adobe#readme"
+}

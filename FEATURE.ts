@@ -21,13 +21,14 @@ AEQuery.prototype.breakByGrid = function (options:AEQueryBBGOptions) {
     var ySize:number;
     var rect = first.sourceRectAtTime(0, true);
     var scale = (<number[]>(<Property>first.property('Scale')).value).map(_ => _ / 100);
-
+    var width = rect.width * scale[0];
+    var height = rect.height * scale[1];
     var xIndex = 0, yIndex = 0;
 
     if (typeof options.xSize === "string") {
         let [match, value] = options.xSize.match(/^(\d+)%/);
         let v = parseFloat(value) / 100;
-        xSize = rect.width * v;
+        xSize = width * (v);
     } else {
         xSize = <number>options.xSize;
     }
@@ -35,13 +36,13 @@ AEQuery.prototype.breakByGrid = function (options:AEQueryBBGOptions) {
     if (typeof options.ySize === "string") {
         let [match, value] = options.ySize.match(/^(\d+)%/);
         let v = parseFloat(value) / 100;
-        ySize = rect.height * v;
+        ySize = height * (v);
     } else {
         ySize = <number>options.ySize;
     }
 
-    for (let x = 0; x < rect.width; x += xSize) {
-        for (let y = 0; y < rect.height; y += ySize) {
+    for (let x = 0; x < width; x += xSize) {
+        for (let y = 0; y < height; y += ySize) {
             let dupl:AVLayer = <AVLayer>first.duplicate();
             let prop = (<any>dupl.mask.addProperty('Mask').property('Mask Path'));
             let path = prop.value;
