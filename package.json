@@ -2,7 +2,7 @@
   "name": "ae-typescript-example",
   "version": "1.0.0",
   "description": "",
-  "main": "ae-path.js",
+  "main": "build/script.jsx",
   "dependencies": {
     "regedit": "^2.2.6"
   },
